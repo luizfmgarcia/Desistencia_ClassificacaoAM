@@ -5,7 +5,58 @@ import numpy as np
 #==============================================================================================================            
 
 def genData():
-        
+    
+    QTDE_CONTINUA = 1000
+    QTDE_DESISTE = 1000
+    
+    # % Desistencia dos cursos
+    # Humanas (0) 15%; Exatas (1) 30%; Engenharias (2) 45%; Licenciaturas (3) 10%;
+    cursos = range(0, 4)
+    prob_desiste = [0.15, 0.30, 0.45, 0.1]
+    prob_continua = [0.85, 0.7, 0.55, 0.9]
+    curso_desiste = np.random.choice(cursos, QTDE_DESISTE, p=prob_desiste)
+    curso_continua = np.random.choice(cursos, QTDE_CONTINUA, p=prob_continua)
+    
+    # % Desistencia dependendo do periodo de estudo
+    # Matutino (0) 5%; Vespertino (1) 10%; Noturno 20%;
+    periodos = range(0, 3)
+    prob_desiste = [0.05, 0.1, 0.2]
+    prob_continua = [0.95, 0.9, 0.8]
+    periodo_desiste = np.random.choice(periodos, QTDE_DESISTE, p=prob_desiste)
+    periodo_continua = np.random.choice(periodos, QTDE_CONTINUA, p=prob_continua)
+    
+    # % de faltas em todas as aulas do curso
+    # Quem falta mais tende a desistir mais facilmente
+    faltas_desiste = np.random.normal(40, 20, QTDE_DESISTE)
+    faltas_continua = np.random.normal(10, 10, QTDE_CONTINUA)
+    
+    # Numero de reprovacoes no curso
+    # Quem reproma mais tende a desistir mais facilmente
+    reprovacoes_desiste = np.random.uniform(0, 25, QTDE_DESISTE)
+    reprovacoes_continua = np.random.uniform(0, 10, QTDE_CONTINUA)
+    
+    # Idade dos alunos (entre 17 - 60) maior parte entre 18 e 25
+    
+    # Trabalha (1) - Matutino e vespertino sao muito poucos
+    
+    # Sexo Feminino (0) Masculino (1) 50% cada
+    
+    # Num Filhos - maior parte nao possui
+    
+    # DistCasa, 
+    
+    # DistTrabalho, 
+    
+    # NumAmigos, 
+    
+    # Psicologico, 
+    
+    # RendaFamiliar, 
+    
+    # Bolsista
+    
+def genData1():        
+    
     QTDE_SUCESSO = 500
     QTDE_FRACASSO = 500
     

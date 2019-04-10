@@ -8,7 +8,7 @@ from sklearn.model_selection import cross_val_score
 class main: 
     # Use estas duas linhas para criar e salvar a base de dados caso ainda nao exista uma
     # Isto apaga o que ja existe na pasta do projeto
-    X, y = genData()
+    X, y = genData1()
     outDataBase(X, y)
     
     # Aqui voce recupera a base dados existente em CSV na pasta do projeto
