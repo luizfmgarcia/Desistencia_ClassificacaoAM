@@ -1,7 +1,7 @@
 #from objects import *
 from ioData import *
 import numpy as np
-# Curso, PeriodoCurso, NumFaltas, NumReprovacoes, Idade, Trabalha, Sexo, NumFilhos, DistCasa, DistTrabalho, NumAmigos, Psicologico, RendaFamiliar, Bolsa      
+# 'Curso', 'TurnoAulas', 'CursandoPeriodo', 'NumFaltas', 'NumReprovacoes', 'Bolsista', 'NumAmigos', 'Psicologico', 'Idade', 'Sexo', 'Trabalha', 'DistUniCasa', 'DistUniTrabalho', 'RendaFamiliar', 'NumFilhos'       
 #==============================================================================================================            
 
 def genData():
@@ -9,51 +9,85 @@ def genData():
     QTDE_CONTINUA = 1000
     QTDE_DESISTE = 1000
     
-    # % Desistencia dos cursos
-    # Humanas (0) 15%; Exatas (1) 30%; Engenharias (2) 45%; Licenciaturas (3) 10%;
+    # Cursos
+    # %desistencia: Humanas(0)15%; Exatas(1)30%; Engenharias(2)45%; Licenciaturas(3)10%;
     cursos = range(0, 4)
     prob_desiste = [0.15, 0.30, 0.45, 0.1]
     prob_continua = [0.85, 0.7, 0.55, 0.9]
     curso_desiste = np.random.choice(cursos, QTDE_DESISTE, p=prob_desiste)
     curso_continua = np.random.choice(cursos, QTDE_CONTINUA, p=prob_continua)
     
-    # % Desistencia dependendo do periodo de estudo
-    # Matutino (0) 5%; Vespertino (1) 10%; Noturno 20%;
-    periodos = range(0, 3)
+    # Turno que as aulas ocorrem
+    # %desistencia: Matutino(0)5%; Vespertino(1)10%; Noturno(2)20%;
+    turnos = range(0, 3)
     prob_desiste = [0.05, 0.1, 0.2]
     prob_continua = [0.95, 0.9, 0.8]
+    turnos_desiste = np.random.choice(turnos, QTDE_DESISTE, p=prob_desiste)
+    turnos_continua = np.random.choice(turnos, QTDE_CONTINUA, p=prob_continua)
+    
+    # Periodo que o aluno esta cursando atualmente
+    # %desistencia: Primeiros_6Meses(0)70%; Entre_6Meses_2Anos(1)20%; Entre_2Anos_DuracaoTotalCurso(2)10%;
+    periodos = range(0, 3)
+    prob_desiste = [0.7, 0.2, 0.1]
+    prob_continua = [0.3, 0.8, 0.9]
     periodo_desiste = np.random.choice(periodos, QTDE_DESISTE, p=prob_desiste)
     periodo_continua = np.random.choice(periodos, QTDE_CONTINUA, p=prob_continua)
     
-    # % de faltas em todas as aulas do curso
-    # Quem falta mais tende a desistir mais facilmente
-    faltas_desiste = np.random.normal(40, 20, QTDE_DESISTE)
+    # Num faltas: % representa numero faltas em relacao ao total de aulas cursadas ate agora
+    # quem falta mais tende a desistir mais facilmente
+    faltas_desiste = np.random.normal(30, 30, QTDE_DESISTE)
     faltas_continua = np.random.normal(10, 10, QTDE_CONTINUA)
     
     # Numero de reprovacoes no curso
-    # Quem reproma mais tende a desistir mais facilmente
+    # Quem reprova mais tende a desistir mais facilmente
     reprovacoes_desiste = np.random.uniform(0, 25, QTDE_DESISTE)
     reprovacoes_continua = np.random.uniform(0, 10, QTDE_CONTINUA)
     
+    # Nao-Trab. (0); Trabalha (1)
+    # matutino e vespertino sao muito poucos os que trabalham (5%); noturno (85%)
+    # quem trabalha tende a desistir menos por almejar melhores posicoes na empresa
+    # %desistencia: trabalha(10%), nao-trabalha(30%)
+    trabalha_desiste = np.array()
+    trabalha_continua = np.array()
+    trabalha = range(0, 1)
+    prob_desiste_matutino_vespertino = [0.15, 0.005]
+    prob_continua_matutino_vespertino = [0.65, 0.85]
+    prob_desiste_noturno = [0.35, 0.15]
+    prob_continua_noturno = [0.65, 0.85]
+    for aluno in turnos_desiste:
+        # Matutino e Vespertino (5%)
+        if(aluno==0 or aluno==1):
+            trabalha_desiste.append(np.random.choice(periodos, 1, p=prob_desiste))
+        # Noturno (85%)
+        if(aluno==2):
+            trabalha_desiste.append(np.random.normal(80,10,1))
+            
+    # Bolsista(algum beneficio/auxilio financeiro)(1), Nao_Bolsista(0)
+    # Quem ganha um auxilio tende a se manter estudando
+    # Quem ja trabalha (possui renda)
+    
     # Idade dos alunos (entre 17 - 60) maior parte entre 18 e 25
+    # maior desistencia entre os jovens ainda indecisos e em tempo de mudar de curso
     
-    # Trabalha (1) - Matutino e vespertino sao muito poucos
+    # DistTrabalho,
     
-    # Sexo Feminino (0) Masculino (1) 50% cada
+    # DistCasa 
     
-    # Num Filhos - maior parte nao possui
+    # Sexo: Feminino (0) Masculino (1) 
+    # aprox. 50% cada
     
-    # DistCasa, 
+    # Num Filhos
+    # maior parte nao possui e ha maior prob entre os mais velhos (acima 30 anos)
+    # 
     
-    # DistTrabalho, 
+ 
     
     # NumAmigos, 
     
     # Psicologico, 
     
     # RendaFamiliar, 
-    
-    # Bolsista
+
     
 def genData1():        
     

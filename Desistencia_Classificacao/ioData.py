@@ -52,7 +52,7 @@ def outDataBase(X, y):
     outName = newDir + 'dataBase.csv'                
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';')
-        spamwriter.writerow(['Curso', 'PeriodoCurso', 'NumFaltas', 'NumReprovacoes', 'Idade', 'Trabalha', 'Sexo', 'NumFilhos', 'DistCasa', 'DistTrabalho', 'NumAmigos', 'Psicologico', 'RendaFamiliar', 'Bolsa', 'y'])
+        spamwriter.writerow(['Curso', 'TurnoAulas', 'CursandoPeriodo', 'NumFaltas', 'NumReprovacoes', 'Bolsista', 'DistUniCasa', 'DistUniTrabalho', 'NumAmigos', 'Psicologico', 'Idade', 'Sexo', 'Trabalha', 'RendaFamiliar', 'NumFilhos', 'y'])
         i=0
         for i in range(y.size):
             row = np.append(X[i], y[i])
