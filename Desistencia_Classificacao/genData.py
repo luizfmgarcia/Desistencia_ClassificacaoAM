@@ -20,16 +20,16 @@ def genData():
     curso_continua = np.random.choice(cursos, QTDE_CONTINUA, p=prob_continua)
     
     # Turno que as aulas ocorrem
-    # Maires desistencias no noturno?
-    # %desistencia: Matutino(0)15%; Vespertino(1)25%; Noturno(2)60%;
-    # %continua: Matutino(0)50%; Vespertino(1)30%; Noturno(2)20%;
+    # Um pouco maior o numero de desistencias no noturno pelo cansaço
+    # %desistencia: Matutino(0)30%; Vespertino(1)30%; Noturno(2)40%;
+    # %continua: Matutino(0)35%; Vespertino(1)35%; Noturno(2)30%;
     turnos = range(0, 3)
-    prob_desiste = [0.05, 0.1, 0.2]
-    prob_continua = [0.95, 0.9, 0.8]
+    prob_desiste = [0.3, 0.3, 0.4]
+    prob_continua = [0.35, 0.35, 0.3]
     turnos_desiste = np.random.choice(turnos, QTDE_DESISTE, p=prob_desiste)
     turnos_continua = np.random.choice(turnos, QTDE_CONTINUA, p=prob_continua)
     
-    # Periodo que o aluno esta cursando atualmente
+    # Periodo do curso que o aluno esta matriculado/cursando atualmente
     # %desistencia: Primeiros_6Meses(0)70%; Entre_6Meses_2Anos(1)20%; Entre_2Anos_DuracaoTotalCurso(2)10%;
     periodos = range(0, 3)
     prob_desiste = [0.7, 0.2, 0.1]
