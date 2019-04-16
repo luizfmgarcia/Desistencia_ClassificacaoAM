@@ -6,10 +6,10 @@ import numpy as np
 
 def genData():
     
-    QTDE_CONTINUA = 1000
-    QTDE_DESISTE = 1000
+    QTDE_CONTINUA = 1500
+    QTDE_DESISTE = 1500
     
-    # Cursos
+    # Cursos:
     # exatas e engenharias - maiores desistencias
     # %desistencia: Humanas(0)10%; Exatas(1)30%; Biologicas(2)15%; Engenharias(3)35%; Licenciaturas(4)10%;
     # %continua: Humanas(0)25%; Exatas(1)20%; Biologicas(2)20%; Engenharias(3)10%; Licenciaturas(4)25%;
@@ -19,7 +19,7 @@ def genData():
     curso_desiste = np.random.choice(cursos, QTDE_DESISTE, p=prob_desiste)
     curso_continua = np.random.choice(cursos, QTDE_CONTINUA, p=prob_continua)
     
-    # Turno que as aulas ocorrem
+    # Turno que as aulas ocorrem:
     # um pouco maior o numero de desistencias no noturno pelo cansaço
     # %desistencia: Matutino(0)30%; Vespertino(1)30%; Noturno(2)40%;
     # %continua: Matutino(0)35%; Vespertino(1)35%; Noturno(2)30%;
@@ -29,7 +29,7 @@ def genData():
     turnos_desiste = np.random.choice(turnos, QTDE_DESISTE, p=prob_desiste)
     turnos_continua = np.random.choice(turnos, QTDE_CONTINUA, p=prob_continua)
     
-    # Periodo do curso que o aluno esta matriculado/cursando atualmente
+    # Periodo do curso que o aluno esta matriculado/cursando atualmente:
     # %desistencia: Primeiros_6Meses(0)70%; Entre_6Meses_2Anos(1)20%; Entre_2Anos_DuracaoTotalCurso(2)10%;
     periodos = range(0, 3)
     prob_desiste = [0.7, 0.2, 0.1]
@@ -47,6 +47,37 @@ def genData():
     # quem reprova mais tende a desistir mais facilmente
     reprovacoes_desiste = np.random.uniform(0, 25, QTDE_DESISTE)
     reprovacoes_continua = np.random.uniform(0, 15, QTDE_CONTINUA)
+    
+    # DistTrabalho (Km):
+    # Quem trabalha mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
+    distTrab_desiste = np.random.normal(20, 20, QTDE_DESISTE)
+    distTrab_continua = np.random.uniform(10, 10, QTDE_CONTINUA)
+    
+    # DistCasa (Km):
+    # Quem mora mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
+    distCasa_desiste = np.random.normal(20, 20, QTDE_DESISTE)
+    distCasa_continua = np.random.uniform(10, 10, QTDE_CONTINUA)
+                                            
+    # Sexo:
+    # Feminino(0); Masculino(1)
+    # mulheres sao mais responsaveis
+    sexos = range(0, 1)
+    prob_desiste = [0.48, 0.52]
+    prob_continua = [0.52, 0.48]
+    sexos_desiste = np.random.choice(sexos, QTDE_DESISTE, p=prob_desiste)
+    sexos_continua = np.random.choice(sexos, QTDE_CONTINUA, p=prob_continua)
+    
+    # RendaFamiliar:
+    # Baixa(0); Media(1); Alta(2);
+    # Quem possui renda alta
+        
+    # Idade dos alunos (entre 17 - 60):
+    # maior parte entre 18 e 25 (80%)
+    # maior desistencia entre os jovens (ainda indecisos e em tempo de mudar de curso)
+      
+    # Filhos:
+    # Nao-Possui(0); Possui(1)
+    # maior parte nao possui e ha maior prob entre os mais velhos (acima 30 anos)
     
     # Nao-Trabalha(0) ou Trabalha(1)
     # matutino e vespertino sao muito poucos os que trabalham (5%); noturno (85%)
@@ -69,29 +100,13 @@ def genData():
             
     # Bolsista(algum beneficio/auxilio financeiro)(1), Nao_Bolsista(0)
     # Quem ganha um auxilio tende a se manter estudando
-    # Quem ja trabalha (possui renda)
+    # Quem ja trabalha (possui renda) minima prob. de receber auxilios
     
-    # Idade dos alunos (entre 17 - 60) maior parte entre 18 e 25
-    # maior desistencia entre os jovens ainda indecisos e em tempo de mudar de curso
+    # NumAmigos:
+    # No noturno, menos amigos, pelo tempo mais limitado
     
-    # DistTrabalho,
-    
-    # DistCasa 
-    
-    # Sexo: Feminino (0) Masculino (1) 
-    # aprox. 50% cada
-    
-    # Num Filhos
-    # maior parte nao possui e ha maior prob entre os mais velhos (acima 30 anos)
-    # 
-    
- 
-    
-    # NumAmigos, 
-    
-    # Psicologico, 
-    
-    # RendaFamiliar, 
+    # Psicologico:
+    # Se sente: Otimo(0); Bom(1); Razoavel(2); Ruim(3); Pessimo(4); 
 
     
 def genData1():        
