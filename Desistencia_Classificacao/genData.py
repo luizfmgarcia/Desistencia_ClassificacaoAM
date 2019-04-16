@@ -1,7 +1,7 @@
 #from objects import *
 from ioData import *
 import numpy as np
-# 'Curso', 'TurnoAulas', 'CursandoPeriodo', 'NumFaltas', 'NumReprovacoes', 'Bolsista', 'NumAmigos', 'Psicologico', 'Idade', 'Sexo', 'Trabalha', 'DistUniCasa', 'DistUniTrabalho', 'RendaFamiliar', 'NumFilhos'       
+# 'Curso', 'TurnoAulas', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'Bolsista', 'NumAmigos', 'Psicologico', 'Idade', 'Sexo', 'Trabalha', 'DistCasa', 'DistTrabalho', 'RendaFamiliar', 'PossuiFilhos'       
 #==============================================================================================================            
 
 def genData():
@@ -10,9 +10,8 @@ def genData():
     QTDE_DESISTE = 1500
     
     # Cursos:
+    # Humanas(0); Exatas(1); Biologicas(2); Engenharias(3); Licenciaturas(4);
     # exatas e engenharias - maiores desistencias
-    # %desistencia: Humanas(0)10%; Exatas(1)30%; Biologicas(2)15%; Engenharias(3)35%; Licenciaturas(4)10%;
-    # %continua: Humanas(0)25%; Exatas(1)20%; Biologicas(2)20%; Engenharias(3)10%; Licenciaturas(4)25%;
     cursos = range(0, 4)
     prob_desiste = [0.1, 0.30, 0.15, 0.35, 0.1]
     prob_continua = [0.25, 0.2, 0.2, 0.1, 0.25]
@@ -20,9 +19,8 @@ def genData():
     curso_continua = np.random.choice(cursos, QTDE_CONTINUA, p=prob_continua)
     
     # Turno que as aulas ocorrem:
-    # um pouco maior o numero de desistencias no noturno pelo cansaço
-    # %desistencia: Matutino(0)30%; Vespertino(1)30%; Noturno(2)40%;
-    # %continua: Matutino(0)35%; Vespertino(1)35%; Noturno(2)30%;
+    # Matutino(0); Vespertino(1); Noturno(2);
+    # um pouco maior o numero de desistencias no noturno pelo cansaço, menos tempo de estudo, etc
     turnos = range(0, 3)
     prob_desiste = [0.3, 0.3, 0.4]
     prob_continua = [0.35, 0.35, 0.3]
@@ -30,7 +28,8 @@ def genData():
     turnos_continua = np.random.choice(turnos, QTDE_CONTINUA, p=prob_continua)
     
     # Periodo do curso que o aluno esta matriculado/cursando atualmente:
-    # %desistencia: Primeiros_6Meses(0)70%; Entre_6Meses_2Anos(1)20%; Entre_2Anos_DuracaoTotalCurso(2)10%;
+    # Primeiros_6Meses(0); Entre_6Meses_2Anos(1); Entre_2Anos_DuracaoTotalCurso(2);
+    # maior prob de desistir no inicio do curso
     periodos = range(0, 3)
     prob_desiste = [0.7, 0.2, 0.1]
     prob_continua = [0.3, 0.8, 0.9]
@@ -67,10 +66,26 @@ def genData():
     sexos_desiste = np.random.choice(sexos, QTDE_DESISTE, p=prob_desiste)
     sexos_continua = np.random.choice(sexos, QTDE_CONTINUA, p=prob_continua)
     
+    # Psicologico:
+    # se sente: Otimo(0); Bom(1); Razoavel(2); Ruim(3); Pessimo(4); 
+    # quem esta com psicologico fragil tende mais a desistir
+    psicologico = range(0, 5)
+    prob_desiste = [0.1, 0.2, 0.2, 0.3, 0.2]
+    prob_continua = [0.1, 0.3, 0.3, 0.15, 0.15]
+    psicologico_desiste = np.random.choice(psicologico, QTDE_DESISTE, p=prob_desiste)
+    psicologico_continua = np.random.choice(psicologico, QTDE_CONTINUA, p=prob_continua)
+    
     # RendaFamiliar:
     # Baixa(0); Media(1); Alta(2);
-    # Quem possui renda alta
-        
+    # ha mais pessoas de renda media nas universidades
+    # quem possui renda alta tende mais a desistir pela comodidade
+    # quem possui renda mais baixa tende mais a desistir pela dificuldade de se manter estudando
+    rendaFamiliar = range(0, 3)
+    prob_desiste = [0.3, 0.4, 0.3]
+    prob_continua = [0.25, 0.5, 0.25]
+    rendaFamiliar_desiste = np.random.choice(rendaFamiliar, QTDE_DESISTE, p=prob_desiste)
+    rendaFamiliar_continua = np.random.choice(rendaFamiliar, QTDE_CONTINUA, p=prob_continua)
+    
     # Idade dos alunos (entre 17 - 60):
     # maior parte entre 18 e 25 (80%)
     # maior desistencia entre os jovens (ainda indecisos e em tempo de mudar de curso)
@@ -78,6 +93,9 @@ def genData():
     # Filhos:
     # Nao-Possui(0); Possui(1)
     # maior parte nao possui e ha maior prob entre os mais velhos (acima 30 anos)
+        
+    # NumAmigos:
+    # No noturno, menos amigos, pelo tempo mais limitado
     
     # Nao-Trabalha(0) ou Trabalha(1)
     # matutino e vespertino sao muito poucos os que trabalham (5%); noturno (85%)
@@ -102,12 +120,13 @@ def genData():
     # Quem ganha um auxilio tende a se manter estudando
     # Quem ja trabalha (possui renda) minima prob. de receber auxilios
     
-    # NumAmigos:
-    # No noturno, menos amigos, pelo tempo mais limitado
     
-    # Psicologico:
-    # Se sente: Otimo(0); Bom(1); Razoavel(2); Ruim(3); Pessimo(4); 
-
+    X_fracasso = np.vstack([]).T
+    X_sucesso = np.vstack([]).T
+    X = np.vstack([X_fracasso, X_sucesso]) # primeiro os fracassos, depois os sucessos
+    y = np.array([0]*QTDE_FRACASSO + [1]*QTDE_SUCESSO) # zeros seguidos de uns
+    
+    return X, y
     
 def genData1():        
     
