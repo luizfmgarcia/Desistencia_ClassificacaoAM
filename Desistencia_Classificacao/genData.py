@@ -1,7 +1,8 @@
 #from objects import *
 from ioData import *
 import numpy as np
-# 'Curso', 'TurnoAulas', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'Bolsista', 'NumAmigos', 'Psicologico', 'Idade', 'Sexo', 'Trabalha', 'DistCasa', 'DistTrabalho', 'RendaFamiliar', 'PossuiFilhos'       
+# 'Curso', 'TurnoAulas', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'Convivio', 'Psicologico', 'Sexo', 'Idade', 'PossuiFilhos', 'RendaFamiliar', 'Trabalha', 'Bolsista', 'DistTrabalho', 'DistCasa'     
+
 #==============================================================================================================            
 
 def genData():
@@ -12,8 +13,8 @@ def genData():
     # Cursos:
     # Humanas(0); Exatas(1); Biologicas(2); Engenharias(3); Licenciaturas(4);
     # exatas e engenharias - maiores desistencias
-    cursos = range(0, 4)
-    prob_desiste = [0.1, 0.30, 0.15, 0.35, 0.1]
+    cursos = range(0, 5)
+    prob_desiste = [0.1, 0.3, 0.15, 0.35, 0.1]
     prob_continua = [0.25, 0.2, 0.2, 0.1, 0.25]
     curso_desiste = np.random.choice(cursos, QTDE_DESISTE, p=prob_desiste)
     curso_continua = np.random.choice(cursos, QTDE_CONTINUA, p=prob_continua)
@@ -32,7 +33,7 @@ def genData():
     # maior prob de desistir no inicio do curso
     periodos = range(0, 3)
     prob_desiste = [0.7, 0.2, 0.1]
-    prob_continua = [0.3, 0.8, 0.9]
+    prob_continua = [0.1, 0.2, 0.7]
     periodo_desiste = np.random.choice(periodos, QTDE_DESISTE, p=prob_desiste)
     periodo_continua = np.random.choice(periodos, QTDE_CONTINUA, p=prob_continua)
     
@@ -47,24 +48,15 @@ def genData():
     reprovacoes_desiste = np.random.uniform(0, 25, QTDE_DESISTE)
     reprovacoes_continua = np.random.uniform(0, 15, QTDE_CONTINUA)
     
-    # DistTrabalho (Km):
-    # Quem trabalha mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
-    distTrab_desiste = np.random.normal(20, 20, QTDE_DESISTE)
-    distTrab_continua = np.random.uniform(10, 10, QTDE_CONTINUA)
-    
-    # DistCasa (Km):
-    # Quem mora mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
-    distCasa_desiste = np.random.normal(20, 20, QTDE_DESISTE)
-    distCasa_continua = np.random.uniform(10, 10, QTDE_CONTINUA)
-                                            
-    # Sexo:
-    # Feminino(0); Masculino(1)
-    # mulheres sao mais responsaveis
-    sexos = range(0, 1)
-    prob_desiste = [0.48, 0.52]
-    prob_continua = [0.52, 0.48]
-    sexos_desiste = np.random.choice(sexos, QTDE_DESISTE, p=prob_desiste)
-    sexos_continua = np.random.choice(sexos, QTDE_CONTINUA, p=prob_continua)
+    # Convivio:
+    # Pessimo convivio pode facilitar na decisao de desistencia
+    # se sente: Otimo(0); Bom(1); Razoavel(2); Ruim(3); Pessimo(4); 
+    # quem esta com psicologico fragil tende mais a desistir
+    convivio = range(0, 5)
+    prob_desiste = [0.05, 0.05, 0.2, 0.4, 0.3]
+    prob_continua = [0.3, 0.3, 0.2, 0.1, 0.1]
+    convivio_desiste = np.random.choice(convivio, QTDE_DESISTE, p=prob_desiste)
+    convivio_continua = np.random.choice(convivio, QTDE_CONTINUA, p=prob_continua)
     
     # Psicologico:
     # se sente: Otimo(0); Bom(1); Razoavel(2); Ruim(3); Pessimo(4); 
@@ -74,7 +66,56 @@ def genData():
     prob_continua = [0.1, 0.3, 0.3, 0.15, 0.15]
     psicologico_desiste = np.random.choice(psicologico, QTDE_DESISTE, p=prob_desiste)
     psicologico_continua = np.random.choice(psicologico, QTDE_CONTINUA, p=prob_continua)
+                                            
+    # Sexo:
+    # Feminino(0); Masculino(1)
+    # mulheres sao mais responsaveis
+    sexos = range(0, 2)
+    prob_desiste = [0.48, 0.52]
+    prob_continua = [0.52, 0.48]
+    sexos_desiste = np.random.choice(sexos, QTDE_DESISTE, p=prob_desiste)
+    sexos_continua = np.random.choice(sexos, QTDE_CONTINUA, p=prob_continua)
     
+    # Idade dos alunos (entre 17 - 60):
+    # maior parte entre 17 e 30 (80%);
+    # maior desistencia entre os jovens ate 23 anos (ainda indecisos e em tempo de mudar de curso)
+    idade_desiste1 = np.random.normal(20, 3, int(QTDE_DESISTE*0.8))
+    idade_desiste2 = np.random.uniform(24, 35, int(QTDE_DESISTE*0.15))
+    idade_desiste3 = np.random.uniform(36, 60, int(QTDE_DESISTE*0.15))
+    idade_desiste = idade_desiste1.append(idade_desiste2.append(idade_desiste3))
+    while(len(idade_desiste) < QTDE_DESISTE):
+        idade_desiste.append(np.random.normal(20, 3, int(QTDE_DESISTE*0.8)))    
+    
+    idade_continua1 = np.random.normal(20, 3, int(QTDE_CONTINUA*0.2))
+    idade_continua2 = np.random.uniform(24, 35, int(QTDE_CONTINUA*0.5))
+    idade_continua3 = np.random.uniform(36, 60, int(QTDE_CONTINUA*0.3))
+    idade_continua = np.vstack([idade_continua1, idade_continua2, idade_continua3])
+    while(idade_continua.size < QTDE_CONTINUA):
+        idade_continua.append(np.random.uniform(24, 35, int(QTDE_CONTINUA*0.5)))  
+    
+    # Filhos:
+    # Nao-Possui(0); Possui(1)
+    # maior parte nao possui e ha maior prob entre os mais velhos (acima 30 anos)
+    # quem possui filho e tem mais de 30, a principio, e mais responsavel - menor desistencia
+    # se tem menos de 30 pode acabar obtando por desistir mais facilmente
+    filhos_desiste = np.array()
+    for idade in idade_desiste:
+        if(idade<30):
+            resultado = np.random.rand(1) < 0.1
+            filhos_desiste.append(resultado)
+        if(idade>=30):    
+            resultado = np.random.rand(1) < 0.05
+            filhos_desiste.append(resultado)
+    
+    filhos_continua = np.array()        
+    for idade in idade_continua:
+        if(idade<30):
+            resultado = np.random.rand(1) < 0.05
+            filhos_continua.append(resultado)
+        if(idade>=30):    
+            resultado = np.random.rand(1) < 0.15
+            filhos_continua.append(resultado)
+            
     # RendaFamiliar:
     # Baixa(0); Media(1); Alta(2);
     # ha mais pessoas de renda media nas universidades
@@ -84,87 +125,78 @@ def genData():
     prob_desiste = [0.3, 0.4, 0.3]
     prob_continua = [0.25, 0.5, 0.25]
     rendaFamiliar_desiste = np.random.choice(rendaFamiliar, QTDE_DESISTE, p=prob_desiste)
-    rendaFamiliar_continua = np.random.choice(rendaFamiliar, QTDE_CONTINUA, p=prob_continua)
-    
-    # Idade dos alunos (entre 17 - 60):
-    # maior parte entre 18 e 25 (80%)
-    # maior desistencia entre os jovens (ainda indecisos e em tempo de mudar de curso)
-      
-    # Filhos:
-    # Nao-Possui(0); Possui(1)
-    # maior parte nao possui e ha maior prob entre os mais velhos (acima 30 anos)
-        
-    # NumAmigos:
-    # No noturno, menos amigos, pelo tempo mais limitado
-    
+    rendaFamiliar_continua = np.random.choice(rendaFamiliar, QTDE_CONTINUA, p=prob_continua)       
+
     # Nao-Trabalha(0) ou Trabalha(1)
-    # matutino e vespertino sao muito poucos os que trabalham (5%); noturno (85%)
+    # matutino e vespertino sao muito poucos os que trabalham;
     # quem trabalha tende a desistir menos por almejar melhores posicoes na empresa
-    # %desistencia: trabalha(10%), nao-trabalha(30%)
     trabalha_desiste = np.array()
-    trabalha_continua = np.array()
-    trabalha = range(0, 1)
-    prob_desiste_matutino_vespertino = [0.15, 0.005]
-    prob_continua_matutino_vespertino = [0.65, 0.85]
-    prob_desiste_noturno = [0.35, 0.15]
-    prob_continua_noturno = [0.65, 0.85]
-    for aluno in turnos_desiste:
-        # Matutino e Vespertino (5%)
-        if(aluno==0 or aluno==1):
-            trabalha_desiste.append(np.random.choice(periodos, 1, p=prob_desiste))
-        # Noturno (85%)
-        if(aluno==2):
-            trabalha_desiste.append(np.random.normal(80,10,1))
-            
+    for turno in turnos_desiste:
+        if(turno==2): # noturno
+            resultado = np.random.rand(1) < 0.1
+            trabalha_desiste.append(resultado)
+        if(turno!=2): # matutino e vespertino   
+            resultado = np.random.rand(1) < 0.01
+            trabalha_desiste.append(resultado)
+    
+    trabalha_continua = np.array()        
+    for turno in turnos_continua:
+        if(turno==2): # noturno
+            resultado = np.random.rand(1) < 0.8
+            trabalha_continua.append(resultado)
+        if(turno!=2): # matutino e vespertino  
+            resultado = np.random.rand(1) < 0.1
+            trabalha_continua.append(resultado) 
+    
     # Bolsista(algum beneficio/auxilio financeiro)(1), Nao_Bolsista(0)
     # Quem ganha um auxilio tende a se manter estudando
     # Quem ja trabalha (possui renda) minima prob. de receber auxilios
+    bolsista_desiste = np.array()
+    for trabalha in trabalha_desiste:
+        if(trabalha):
+            resultado = np.random.rand(1) < 0.05
+            bolsista_desiste.append(resultado)
+        else:  
+            resultado = np.random.rand(1) < 0.1
+            bolsista_desiste.append(resultado)
     
+    bolsista_continua = np.array()        
+    for trabalha in trabalha_continua:
+        if(trabalha):
+            resultado = np.random.rand(1) < 0.2
+            bolsista_continua.append(resultado)
+        else:  
+            resultado = np.random.rand(1) < 0.8
+            bolsista_continua.append(resultado) 
     
-    X_fracasso = np.vstack([]).T
-    X_sucesso = np.vstack([]).T
-    X = np.vstack([X_fracasso, X_sucesso]) # primeiro os fracassos, depois os sucessos
-    y = np.array([0]*QTDE_FRACASSO + [1]*QTDE_SUCESSO) # zeros seguidos de uns
+    # DistTrabalho (Km):
+    # distancia 0 pra quem nao trabalha
+    # quem trabalha mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
+    distTrab_desiste = np.array()
+    for trabalha in trabalha_desiste:
+        if(trabalha):
+            distTrab_desiste.append(np.random.normal(20, 20, 1))    
+        else:
+            distTrab_desiste.append(0)
+    
+    distTrab_continua = np.array()        
+    for trabalha in trabalha_continua:
+        if(trabalha):
+            distTrab_continua.append(np.random.uniform(10, 10, 1))    
+        else:  
+            distTrab_continua.append(0) 
+    
+    # DistCasa (Km):
+    # quem mora mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
+    distCasa_desiste = np.random.normal(20, 20, QTDE_DESISTE)
+    distCasa_continua = np.random.uniform(10, 10, QTDE_CONTINUA)    
+    
+    # Juntando tudo
+    X_desiste = np.vstack([curso_desiste, turnos_desiste, periodo_desiste, faltas_desiste, reprovacoes_desiste, convivio_desiste, psicologico_desiste, sexos_desiste, idade_desiste, filhos_desiste, rendaFamiliar_desiste, trabalha_desiste, bolsista_desiste, distTrab_desiste, distCasa_desiste]).T
+    X_continua = np.vstack([curso_continua, turnos_continua, periodo_continua, faltas_continua, reprovacoes_continua, convivio_continua, psicologico_continua, sexos_continua, idade_continua, filhos_continua, rendaFamiliar_continua, trabalha_continua, bolsista_continua, distTrab_continua, distCasa_continua]).T
+    X = np.vstack([X_desiste, X_continua]) # primeiro as desistencias, depois as continuidades
+    y = np.array([0]*QTDE_DESISTE + [1]*QTDE_CONTINUA) # zeros seguidos de uns
     
     return X, y
-    
-def genData1():        
-    
-    QTDE_SUCESSO = 500
-    QTDE_FRACASSO = 500
-    
-    # numero de horas de treino por dia
-    # jogadores de sucesso tendem a treinar mais :
-    horas_sucesso = np.random.normal(6, 2, QTDE_SUCESSO)
-    # jogadores sem sucesso treinam menos
-    horas_fracasso = np.random.uniform(0, 3, QTDE_FRACASSO)
 
-    # chuta com os dois pes ?
-    # 30% dos jogares bem sucedidos chutam com os dois pes
-    pes_sucesso = np.random.rand(QTDE_SUCESSO) > 0.7
-    # mas so 10% dos jogadores sem sucesso
-    pes_fracasso = np.random.rand(QTDE_SUCESSO) > 0.9
-    
-    # 10 agentes
-    agentes = range(0 , 10)
-    
-    # agentes 0 ,1 ,2: 15% dos sucessos
-    # agentes 3 ,4 ,5 ,6: 10% dos sucessos
-    # agentes 7 ,8 ,9: 5% dos sucessos
-    prob_sucesso = [0.15, 0.15, 0.15, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05]
-    
-    agente_sucesso = np.random.choice(agentes, QTDE_SUCESSO, p=prob_sucesso)
-    
-    # agentes 0 ,1 ,2: 5% dos fracassos
-    # agentes 3 ,4 ,5 ,6: 10% dos fracassos
-    # agentes 7 ,8 ,9: 15% dos fracassos
-    prob_fracasso = np.flip(prob_sucesso, 0)
-    agente_fracasso = np.random.choice(agentes, QTDE_FRACASSO, p=prob_fracasso)
-    
-    X_sucesso = np.vstack([horas_sucesso, pes_sucesso, agente_sucesso]).T
-    X_fracasso = np.vstack([horas_fracasso, pes_fracasso, agente_fracasso]).T
-    
-    X = np.vstack([X_fracasso, X_sucesso]) # primeiro os fracassos , depois os sucessos
-    y = np.array([0]*QTDE_FRACASSO + [1]*QTDE_SUCESSO) # 500 zeros seguidos de 500 uns
-    
-    return X, y
+#==============================================================================================================  

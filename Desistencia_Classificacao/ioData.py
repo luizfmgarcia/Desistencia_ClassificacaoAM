@@ -52,7 +52,7 @@ def outDataBase(X, y):
     outName = newDir + 'dataBase.csv'                
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';')
-        spamwriter.writerow(['Curso', 'TurnoAulas', 'CursandoPeriodo', 'NumFaltas', 'NumReprovacoes', 'Bolsista', 'DistUniCasa', 'DistUniTrabalho', 'NumAmigos', 'Psicologico', 'Idade', 'Sexo', 'Trabalha', 'RendaFamiliar', 'NumFilhos', 'y'])
+        spamwriter.writerow(['Curso', 'TurnoAulas', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'Convivio', 'Psicologico', 'Sexo', 'Idade', 'PossuiFilhos', 'RendaFamiliar', 'Trabalha', 'Bolsista', 'DistTrabalho', 'DistCasa', 'y'])
         i=0
         for i in range(y.size):
             row = np.append(X[i], y[i])
@@ -62,7 +62,7 @@ def outDataBase(X, y):
         
 #=============================================================================================================
 
-def outResult(result):
+def outResult(mean, std):
     print("Exporting result....",)
     
     # (Re)Creating Database file and director
@@ -78,8 +78,9 @@ def outResult(result):
     outName = newDir + 'result.csv'                
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        #spamwriter.writerow(['Curso', 'PeriodoCurso', 'NumFaltas', 'NumReprovacoes', 'Idade', 'Trabalha', 'Sexo', 'NumFilhos', 'DistCasa', 'DistTrabalho', 'NumAmigos', 'Psicologico', 'RendaFamiliar', 'Bolsa', 'y'])
-        spamwriter.writerow(result)
+        #spamwriter.writerow(['', ''])
+        spamwriter.writerow(mean)
+        spamwriter.writerow(std)
     csvfile.close()  
     print ("Result Saved!")
 
