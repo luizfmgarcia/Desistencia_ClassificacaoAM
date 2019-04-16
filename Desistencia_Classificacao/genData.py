@@ -10,7 +10,7 @@ def genData():
     QTDE_DESISTE = 1000
     
     # Cursos
-    # Exatas e engenharias - maiores desistencias
+    # exatas e engenharias - maiores desistencias
     # %desistencia: Humanas(0)10%; Exatas(1)30%; Biologicas(2)15%; Engenharias(3)35%; Licenciaturas(4)10%;
     # %continua: Humanas(0)25%; Exatas(1)20%; Biologicas(2)20%; Engenharias(3)10%; Licenciaturas(4)25%;
     cursos = range(0, 4)
@@ -20,7 +20,7 @@ def genData():
     curso_continua = np.random.choice(cursos, QTDE_CONTINUA, p=prob_continua)
     
     # Turno que as aulas ocorrem
-    # Um pouco maior o numero de desistencias no noturno pelo cansaço
+    # um pouco maior o numero de desistencias no noturno pelo cansaço
     # %desistencia: Matutino(0)30%; Vespertino(1)30%; Noturno(2)40%;
     # %continua: Matutino(0)35%; Vespertino(1)35%; Noturno(2)30%;
     turnos = range(0, 3)
@@ -37,17 +37,18 @@ def genData():
     periodo_desiste = np.random.choice(periodos, QTDE_DESISTE, p=prob_desiste)
     periodo_continua = np.random.choice(periodos, QTDE_CONTINUA, p=prob_continua)
     
-    # Num faltas: % representa numero faltas em relacao ao total de aulas cursadas ate agora
+    # Faltas(%): 
+    # A % representa a relacao do numero faltas ao numero total de aulas cursadas ate agora pelo aluno
     # quem falta mais tende a desistir mais facilmente
     faltas_desiste = np.random.normal(30, 30, QTDE_DESISTE)
     faltas_continua = np.random.normal(10, 10, QTDE_CONTINUA)
     
-    # Numero de reprovacoes no curso
-    # Quem reprova mais tende a desistir mais facilmente
+    # Reprovacoes no curso (escalar):
+    # quem reprova mais tende a desistir mais facilmente
     reprovacoes_desiste = np.random.uniform(0, 25, QTDE_DESISTE)
-    reprovacoes_continua = np.random.uniform(0, 10, QTDE_CONTINUA)
+    reprovacoes_continua = np.random.uniform(0, 15, QTDE_CONTINUA)
     
-    # Nao-Trab. (0); Trabalha (1)
+    # Nao-Trabalha(0) ou Trabalha(1)
     # matutino e vespertino sao muito poucos os que trabalham (5%); noturno (85%)
     # quem trabalha tende a desistir menos por almejar melhores posicoes na empresa
     # %desistencia: trabalha(10%), nao-trabalha(30%)
