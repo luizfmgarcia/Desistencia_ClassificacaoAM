@@ -10,15 +10,19 @@ def genData():
     QTDE_DESISTE = 1000
     
     # Cursos
-    # %desistencia: Humanas(0)15%; Exatas(1)30%; Engenharias(2)45%; Licenciaturas(3)10%;
+    # Exatas e engenharias - maiores desistencias
+    # %desistencia: Humanas(0)10%; Exatas(1)30%; Biologicas(2)15%; Engenharias(3)35%; Licenciaturas(4)10%;
+    # %continua: Humanas(0)25%; Exatas(1)20%; Biologicas(2)20%; Engenharias(3)10%; Licenciaturas(4)25%;
     cursos = range(0, 4)
-    prob_desiste = [0.15, 0.30, 0.45, 0.1]
-    prob_continua = [0.85, 0.7, 0.55, 0.9]
+    prob_desiste = [0.1, 0.30, 0.15, 0.35, 0.1]
+    prob_continua = [0.25, 0.2, 0.2, 0.1, 0.25]
     curso_desiste = np.random.choice(cursos, QTDE_DESISTE, p=prob_desiste)
     curso_continua = np.random.choice(cursos, QTDE_CONTINUA, p=prob_continua)
     
     # Turno que as aulas ocorrem
-    # %desistencia: Matutino(0)5%; Vespertino(1)10%; Noturno(2)20%;
+    # Maires desistencias no noturno?
+    # %desistencia: Matutino(0)15%; Vespertino(1)25%; Noturno(2)60%;
+    # %continua: Matutino(0)50%; Vespertino(1)30%; Noturno(2)20%;
     turnos = range(0, 3)
     prob_desiste = [0.05, 0.1, 0.2]
     prob_continua = [0.95, 0.9, 0.8]
