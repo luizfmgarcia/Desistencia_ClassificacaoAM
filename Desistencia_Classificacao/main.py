@@ -1,7 +1,7 @@
 #from objects import *
 from genData import *
 from ioData import *
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn import svm
 from sklearn.model_selection import cross_val_score        
 #==============================================================================================================            
 
@@ -15,11 +15,14 @@ class main:
     X, y = getData()
     
     # Algoritmo de classificacao    
-    clf = KNeighborsClassifier(n_neighbors=1)
-    scores = cross_val_score(clf, X, y, cv =10)
-    
-    print(scores.mean(), scores.std()) # 94 ,5 + - 3 ,04%
+    clf = svm.SVC(gamma='scale')
+    clf.fit(X, y)
     
     # Apresentando e Salvando o resultado
+    scores = cross_val_score(clf, X, y, cv =10)
+    print(scores.mean(), scores.std())
     outResult(scores.mean())
+    
+    # Testando o modelo gerado
+    
 #==============================================================================================================
