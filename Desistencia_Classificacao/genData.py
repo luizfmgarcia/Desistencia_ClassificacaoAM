@@ -216,7 +216,7 @@ def genData():
     X_desiste = np.vstack([curso_desiste, turnos_desiste, periodo_desiste, faltas_desiste, reprovacoes_desiste, convivio_desiste, psicologico_desiste, sexos_desiste, idade_desiste, filhos_desiste, rendaFamiliar_desiste, trabalha_desiste, bolsista_desiste, distTrab_desiste, distCasa_desiste]).T
     X_continua = np.vstack([curso_continua, turnos_continua, periodo_continua, faltas_continua, reprovacoes_continua, convivio_continua, psicologico_continua, sexos_continua, idade_continua, filhos_continua, rendaFamiliar_continua, trabalha_continua, bolsista_continua, distTrab_continua, distCasa_continua]).T
     X = np.vstack([X_desiste, X_continua]) # primeiro as desistencias, depois as continuidades
-    y = np.array([0]*QTDE_DESISTE + [1]*QTDE_CONTINUA) # zeros seguidos de uns
+    y = np.array([1]*QTDE_DESISTE + [0]*QTDE_CONTINUA) # desiste = 1; continua = 0
     
     return X, y
 
