@@ -26,8 +26,8 @@ class main:
     
     # Apresentando e Salvando o resultado
     scores = cross_val_score(clf, X, y, cv =10)
-    print(scores.mean(), scores.std())
-    ioData.outResult(scores.mean(), scores.std())
+    print(clf, scores.mean(), scores.std())
+    ioData.outResult(scores.mean(), scores.std(), clf)
     
     # Testando o modelo gerado
     escolha = input('Voce quer testar um novo aluno?(s/n): ')

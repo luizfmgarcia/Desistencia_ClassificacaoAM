@@ -62,7 +62,7 @@ def outDataBase(X, y):
         
 #=============================================================================================================
 
-def outResult(mean, std):
+def outResult(mean, std, clf):
     print("Exporting result....",)
     
     # (Re)Creating Database file and director
@@ -81,6 +81,7 @@ def outResult(mean, std):
         #spamwriter.writerow(['', ''])
         row = np.append(mean, std)
         spamwriter.writerow(row)
+        spamwriter.writerow([str(clf)])
     csvfile.close()  
     print ("Result Saved!")
 
