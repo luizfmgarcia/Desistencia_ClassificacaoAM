@@ -1,6 +1,5 @@
-#from objects import *
-from ioData import *
 import numpy as np
+
 # 'Curso', 'TurnoAulas', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'Convivio', 'Psicologico', 'Sexo', 'Idade', 'PossuiFilhos', 'RendaFamiliar', 'Trabalha', 'Bolsista', 'DistTrabalho', 'DistCasa'     
 
 #==============================================================================================================            
@@ -108,17 +107,20 @@ def genData():
             else: filhos_desiste = np.append(filhos_desiste, 0)
         if(idade>=30):    
             resultado = np.random.rand(1) < 0.05
-            filhos_desiste = np.append(filhos_desiste, resultado)
+            if(resultado): filhos_desiste = np.append(filhos_desiste, 1)
+            else: filhos_desiste = np.append(filhos_desiste, 0)
     filhos_desiste = np.delete(filhos_desiste, 0)
     
     filhos_continua = np.array(None)        
     for idade in idade_continua:
         if(idade<30):
             resultado = np.random.rand(1) < 0.05
-            filhos_continua = np.append(filhos_continua, resultado)
+            if(resultado): filhos_continua = np.append(filhos_continua, 1)
+            else: filhos_continua = np.append(filhos_continua, 0)
         if(idade>=30):    
             resultado = np.random.rand(1) < 0.15
-            filhos_continua = np.append(filhos_continua, resultado)
+            if(resultado): filhos_continua = np.append(filhos_continua, 1)
+            else: filhos_continua = np.append(filhos_continua, 0)
     filhos_continua = np.delete(filhos_continua, 0)
         
     # RendaFamiliar:
@@ -139,20 +141,24 @@ def genData():
     for turno in turnos_desiste:
         if(turno==2): # noturno
             resultado = np.random.rand(1) < 0.1
-            trabalha_desiste = np.append(trabalha_desiste, resultado)
+            if(resultado): trabalha_desiste = np.append(trabalha_desiste, 1)
+            else: trabalha_desiste = np.append(trabalha_desiste, 0)
         if(turno!=2): # matutino e vespertino   
             resultado = np.random.rand(1) < 0.01
-            trabalha_desiste = np.append(trabalha_desiste, resultado)
+            if(resultado): trabalha_desiste = np.append(trabalha_desiste, 1)
+            else: trabalha_desiste = np.append(trabalha_desiste, 0)
     trabalha_desiste = np.delete(trabalha_desiste, 0)
     
     trabalha_continua = np.array(None)        
     for turno in turnos_continua:
         if(turno==2): # noturno
             resultado = np.random.rand(1) < 0.8
-            trabalha_continua = np.append(trabalha_continua, resultado)
+            if(resultado): trabalha_continua = np.append(trabalha_continua, 1)
+            else: trabalha_continua = np.append(trabalha_continua, 0)
         if(turno!=2): # matutino e vespertino  
             resultado = np.random.rand(1) < 0.1
-            trabalha_continua = np.append(trabalha_continua, resultado) 
+            if(resultado): trabalha_continua = np.append(trabalha_continua, 1)
+            else: trabalha_continua = np.append(trabalha_continua, 0) 
     trabalha_continua = np.delete(trabalha_continua, 0)
     
     # Bolsista(algum beneficio/auxilio financeiro)(1), Nao_Bolsista(0)
@@ -162,20 +168,24 @@ def genData():
     for trabalha in trabalha_desiste:
         if(trabalha):
             resultado = np.random.rand(1) < 0.05
-            bolsista_desiste = np.append(bolsista_desiste, resultado)
+            if(resultado): bolsista_desiste = np.append(bolsista_desiste, 1)
+            else: bolsista_desiste = np.append(bolsista_desiste, 0)
         else:  
             resultado = np.random.rand(1) < 0.1
-            bolsista_desiste = np.append(bolsista_desiste, resultado)
+            if(resultado): bolsista_desiste = np.append(bolsista_desiste, 1)
+            else: bolsista_desiste = np.append(bolsista_desiste, 0)
     bolsista_desiste = np.delete(bolsista_desiste, 0)
     
     bolsista_continua = np.array(None)        
     for trabalha in trabalha_continua:
         if(trabalha):
             resultado = np.random.rand(1) < 0.2
-            bolsista_continua = np.append(bolsista_continua, resultado)
+            if(resultado): bolsista_continua = np.append(bolsista_continua, 1)
+            else: bolsista_continua = np.append(bolsista_continua, 0)
         else:  
             resultado = np.random.rand(1) < 0.8
-            bolsista_continua = np.append(bolsista_continua, resultado) 
+            if(resultado): bolsista_continua = np.append(bolsista_continua, 1)
+            else: bolsista_continua = np.append(bolsista_continua, 0) 
     bolsista_continua = np.delete(bolsista_continua, 0)
     
     # DistTrabalho (Km):
@@ -199,7 +209,7 @@ def genData():
     
     # DistCasa (Km):
     # quem mora mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
-    distCasa_desiste = np.random.normal(20, 10, QTDE_DESISTE)
+    distCasa_desiste = np.random.normal(30, 10, QTDE_DESISTE)
     distCasa_continua = np.random.uniform(10, 10, QTDE_CONTINUA)    
 
     # Juntando tudo

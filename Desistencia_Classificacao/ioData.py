@@ -5,9 +5,7 @@ import csv
 import os
 import sys
 import shutil
-import string
 import numpy as np
-import pandas as pd
    
 #==============================================================================================================            
     
@@ -27,11 +25,13 @@ def getData():
             if(first==True):
                 first=False
             else:
-                X.append([row[:-1]])
-                y.append([row[-1]])
+                novo_row = row[:-1]
+                for i in range(len(novo_row)):
+                    novo_row[i] = float(row[i])
+                X.append(novo_row)
+                y.append(float(row[-1]))
     csvfile.close()     
     print ("Data Obtained!")
-    #return np.array(X), np.array(y)
     return np.array(X), np.array(y)
         
 #==============================================================================================================             

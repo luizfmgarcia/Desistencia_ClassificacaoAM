@@ -13,9 +13,9 @@ class main:
     if(escolha=='s'):
         # Estas duas linhas criam e salvam a base de dados caso ainda nao exista uma
         # Isto apaga o que ja existe na pasta do projeto
-        X, y = genData()
+        X, y = genData.genData()
         ioData.outDataBase(X, y)
-        print("Base criada e salva")
+        print("Base criada e guardada!")
     else:
         # Aqui voce recupera a base dados existente em CSV na pasta do projeto
         X, y = ioData.getData()
@@ -37,7 +37,7 @@ class main:
         i = 0
         for i in range(len(novo_X)):
             novo_X[i] = float(novo_X[i])
-        print(clf.predict(novo_X))
+        print(clf.predict([novo_X]))
         escolha = input('Voce quer testar um novo aluno?(s/n): ')    
         
 #==============================================================================================================
