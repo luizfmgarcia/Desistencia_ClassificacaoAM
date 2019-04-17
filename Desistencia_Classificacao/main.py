@@ -1,6 +1,6 @@
 #from objects import *
-from genData import *
-from ioData import *
+import genData
+import ioData
 from sklearn import svm
 from sklearn.model_selection import cross_val_score        
 #==============================================================================================================            
@@ -14,11 +14,11 @@ class main:
         # Estas duas linhas criam e salvam a base de dados caso ainda nao exista uma
         # Isto apaga o que ja existe na pasta do projeto
         X, y = genData()
-        outDataBase(X, y)
+        ioData.outDataBase(X, y)
         print("Base criada e salva")
     else:
         # Aqui voce recupera a base dados existente em CSV na pasta do projeto
-        X, y = getData()
+        X, y = ioData.getData()
     
     # Algoritmo de classificacao    
     clf = svm.SVC(gamma='scale')
@@ -27,12 +27,17 @@ class main:
     # Apresentando e Salvando o resultado
     scores = cross_val_score(clf, X, y, cv =10)
     print(scores.mean(), scores.std())
-    outResult(scores.mean(), scores.std())
+    ioData.outResult(scores.mean(), scores.std())
     
     # Testando o modelo gerado
     escolha = input('Voce quer testar um novo aluno?(s/n): ')
     while(escolha=='s'):
-        dados = input('Curso: ')    
+        dados = input('Valores (separados por virgulas): ')
+        novo_X = dados.split(';')
+        i = 0
+        for i in range(len(novo_X)):
+            novo_X[i] = float(novo_X[i])
+        print(clf.predict(novo_X))
         escolha = input('Voce quer testar um novo aluno?(s/n): ')    
         
 #==============================================================================================================

@@ -40,8 +40,8 @@ def genData():
     # Faltas(%): 
     # A % representa a relacao do numero faltas ao numero total de aulas cursadas ate agora pelo aluno
     # quem falta mais tende a desistir mais facilmente
-    faltas_desiste = np.random.normal(30, 30, QTDE_DESISTE)
-    faltas_continua = np.random.normal(10, 10, QTDE_CONTINUA)
+    faltas_desiste = np.random.normal(30, 10, QTDE_DESISTE)
+    faltas_continua = np.random.normal(10, 5, QTDE_CONTINUA)
     
     # Reprovacoes no curso (escalar):
     # quem reprova mais tende a desistir mais facilmente
@@ -104,7 +104,8 @@ def genData():
     for idade in idade_desiste:
         if(idade<30):
             resultado = np.random.rand(1) < 0.1
-            filhos_desiste = np.append(filhos_desiste, resultado)
+            if(resultado): filhos_desiste = np.append(filhos_desiste, 1)
+            else: filhos_desiste = np.append(filhos_desiste, 0)
         if(idade>=30):    
             resultado = np.random.rand(1) < 0.05
             filhos_desiste = np.append(filhos_desiste, resultado)
@@ -183,7 +184,7 @@ def genData():
     distTrab_desiste = np.array(None)
     for trabalha in trabalha_desiste:
         if(trabalha):
-            distTrab_desiste = np.append(distTrab_desiste, np.random.normal(20, 20, 1))    
+            distTrab_desiste = np.append(distTrab_desiste, np.random.normal(20, 10, 1))    
         else:
             distTrab_desiste = np.append(distTrab_desiste, 0)
     distTrab_desiste = np.delete(distTrab_desiste, 0)
@@ -191,14 +192,14 @@ def genData():
     distTrab_continua = np.array(None)        
     for trabalha in trabalha_continua:
         if(trabalha):
-            distTrab_continua = np.append(distTrab_continua, np.random.uniform(10, 10, 1))    
+            distTrab_continua = np.append(distTrab_continua, np.random.uniform(0, 10, 1))    
         else:  
             distTrab_continua = np.append(distTrab_continua, 0) 
     distTrab_continua = np.delete(distTrab_continua, 0)
     
     # DistCasa (Km):
     # quem mora mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
-    distCasa_desiste = np.random.normal(20, 20, QTDE_DESISTE)
+    distCasa_desiste = np.random.normal(20, 10, QTDE_DESISTE)
     distCasa_continua = np.random.uniform(10, 10, QTDE_CONTINUA)    
 
     # Juntando tudo
