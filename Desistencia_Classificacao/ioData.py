@@ -79,8 +79,8 @@ def outResult(mean, std):
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
         #spamwriter.writerow(['', ''])
-        spamwriter.writerow(mean)
-        spamwriter.writerow(std)
+        row = np.append(mean, std)
+        spamwriter.writerow(row)
     csvfile.close()  
     print ("Result Saved!")
 

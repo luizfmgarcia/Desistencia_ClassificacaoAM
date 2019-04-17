@@ -79,43 +79,47 @@ def genData():
     # Idade dos alunos (entre 17 - 60):
     # maior parte entre 17 e 30 (80%);
     # maior desistencia entre os jovens ate 23 anos (ainda indecisos e em tempo de mudar de curso)
-    idade_desiste1 = np.random.normal(20, 3, int(QTDE_DESISTE*0.8))
-    idade_desiste2 = np.random.uniform(24, 35, int(QTDE_DESISTE*0.15))
-    idade_desiste3 = np.random.uniform(36, 60, int(QTDE_DESISTE*0.15))
-    idade_desiste = idade_desiste1.append(idade_desiste2.append(idade_desiste3))
-    while(len(idade_desiste) < QTDE_DESISTE):
-        idade_desiste.append(np.random.normal(20, 3, int(QTDE_DESISTE*0.8)))    
+    idade_desiste1 = np.random.normal(20, 3, int(QTDE_DESISTE*0.7))
+    idade_desiste2 = np.random.uniform(24, 35, int(QTDE_DESISTE*0.2))
+    idade_desiste3 = np.random.uniform(36, 60, int(QTDE_DESISTE*0.1))
+    idade_desiste = np.append(idade_desiste1, idade_desiste2)
+    idade_desiste = np.append(idade_desiste, idade_desiste3)
+    #while(idade_desiste.size < QTDE_DESISTE):
+    #    idade_desiste = np.append(idade_desiste, np.random.normal(20, 3, int(QTDE_DESISTE*0.8)))    
     
     idade_continua1 = np.random.normal(20, 3, int(QTDE_CONTINUA*0.2))
     idade_continua2 = np.random.uniform(24, 35, int(QTDE_CONTINUA*0.5))
     idade_continua3 = np.random.uniform(36, 60, int(QTDE_CONTINUA*0.3))
-    idade_continua = np.vstack([idade_continua1, idade_continua2, idade_continua3])
-    while(idade_continua.size < QTDE_CONTINUA):
-        idade_continua.append(np.random.uniform(24, 35, int(QTDE_CONTINUA*0.5)))  
+    idade_continua = np.append(idade_continua1, idade_continua2)
+    idade_continua = np.append(idade_continua, idade_continua3)
+    #while(idade_continua.size < QTDE_CONTINUA):
+    #    idade_continua = np.append(idade_continua, np.random.uniform(24, 35, int(QTDE_CONTINUA*0.5)))  
     
     # Filhos:
     # Nao-Possui(0); Possui(1)
     # maior parte nao possui e ha maior prob entre os mais velhos (acima 30 anos)
     # quem possui filho e tem mais de 30, a principio, e mais responsavel - menor desistencia
     # se tem menos de 30 pode acabar obtando por desistir mais facilmente
-    filhos_desiste = np.array()
+    filhos_desiste = np.array(None)
     for idade in idade_desiste:
         if(idade<30):
             resultado = np.random.rand(1) < 0.1
-            filhos_desiste.append(resultado)
+            filhos_desiste = np.append(filhos_desiste, resultado)
         if(idade>=30):    
             resultado = np.random.rand(1) < 0.05
-            filhos_desiste.append(resultado)
+            filhos_desiste = np.append(filhos_desiste, resultado)
+    filhos_desiste = np.delete(filhos_desiste, 0)
     
-    filhos_continua = np.array()        
+    filhos_continua = np.array(None)        
     for idade in idade_continua:
         if(idade<30):
             resultado = np.random.rand(1) < 0.05
-            filhos_continua.append(resultado)
+            filhos_continua = np.append(filhos_continua, resultado)
         if(idade>=30):    
             resultado = np.random.rand(1) < 0.15
-            filhos_continua.append(resultado)
-            
+            filhos_continua = np.append(filhos_continua, resultado)
+    filhos_continua = np.delete(filhos_continua, 0)
+        
     # RendaFamiliar:
     # Baixa(0); Media(1); Alta(2);
     # ha mais pessoas de renda media nas universidades
@@ -130,67 +134,73 @@ def genData():
     # Nao-Trabalha(0) ou Trabalha(1)
     # matutino e vespertino sao muito poucos os que trabalham;
     # quem trabalha tende a desistir menos por almejar melhores posicoes na empresa
-    trabalha_desiste = np.array()
+    trabalha_desiste = np.array(None)
     for turno in turnos_desiste:
         if(turno==2): # noturno
             resultado = np.random.rand(1) < 0.1
-            trabalha_desiste.append(resultado)
+            trabalha_desiste = np.append(trabalha_desiste, resultado)
         if(turno!=2): # matutino e vespertino   
             resultado = np.random.rand(1) < 0.01
-            trabalha_desiste.append(resultado)
+            trabalha_desiste = np.append(trabalha_desiste, resultado)
+    trabalha_desiste = np.delete(trabalha_desiste, 0)
     
-    trabalha_continua = np.array()        
+    trabalha_continua = np.array(None)        
     for turno in turnos_continua:
         if(turno==2): # noturno
             resultado = np.random.rand(1) < 0.8
-            trabalha_continua.append(resultado)
+            trabalha_continua = np.append(trabalha_continua, resultado)
         if(turno!=2): # matutino e vespertino  
             resultado = np.random.rand(1) < 0.1
-            trabalha_continua.append(resultado) 
+            trabalha_continua = np.append(trabalha_continua, resultado) 
+    trabalha_continua = np.delete(trabalha_continua, 0)
     
     # Bolsista(algum beneficio/auxilio financeiro)(1), Nao_Bolsista(0)
     # Quem ganha um auxilio tende a se manter estudando
     # Quem ja trabalha (possui renda) minima prob. de receber auxilios
-    bolsista_desiste = np.array()
+    bolsista_desiste = np.array(None)
     for trabalha in trabalha_desiste:
         if(trabalha):
             resultado = np.random.rand(1) < 0.05
-            bolsista_desiste.append(resultado)
+            bolsista_desiste = np.append(bolsista_desiste, resultado)
         else:  
             resultado = np.random.rand(1) < 0.1
-            bolsista_desiste.append(resultado)
+            bolsista_desiste = np.append(bolsista_desiste, resultado)
+    bolsista_desiste = np.delete(bolsista_desiste, 0)
     
-    bolsista_continua = np.array()        
+    bolsista_continua = np.array(None)        
     for trabalha in trabalha_continua:
         if(trabalha):
             resultado = np.random.rand(1) < 0.2
-            bolsista_continua.append(resultado)
+            bolsista_continua = np.append(bolsista_continua, resultado)
         else:  
             resultado = np.random.rand(1) < 0.8
-            bolsista_continua.append(resultado) 
+            bolsista_continua = np.append(bolsista_continua, resultado) 
+    bolsista_continua = np.delete(bolsista_continua, 0)
     
     # DistTrabalho (Km):
     # distancia 0 pra quem nao trabalha
     # quem trabalha mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
-    distTrab_desiste = np.array()
+    distTrab_desiste = np.array(None)
     for trabalha in trabalha_desiste:
         if(trabalha):
-            distTrab_desiste.append(np.random.normal(20, 20, 1))    
+            distTrab_desiste = np.append(distTrab_desiste, np.random.normal(20, 20, 1))    
         else:
-            distTrab_desiste.append(0)
+            distTrab_desiste = np.append(distTrab_desiste, 0)
+    distTrab_desiste = np.delete(distTrab_desiste, 0)
     
-    distTrab_continua = np.array()        
+    distTrab_continua = np.array(None)        
     for trabalha in trabalha_continua:
         if(trabalha):
-            distTrab_continua.append(np.random.uniform(10, 10, 1))    
+            distTrab_continua = np.append(distTrab_continua, np.random.uniform(10, 10, 1))    
         else:  
-            distTrab_continua.append(0) 
+            distTrab_continua = np.append(distTrab_continua, 0) 
+    distTrab_continua = np.delete(distTrab_continua, 0)
     
     # DistCasa (Km):
     # quem mora mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
     distCasa_desiste = np.random.normal(20, 20, QTDE_DESISTE)
     distCasa_continua = np.random.uniform(10, 10, QTDE_CONTINUA)    
-    
+
     # Juntando tudo
     X_desiste = np.vstack([curso_desiste, turnos_desiste, periodo_desiste, faltas_desiste, reprovacoes_desiste, convivio_desiste, psicologico_desiste, sexos_desiste, idade_desiste, filhos_desiste, rendaFamiliar_desiste, trabalha_desiste, bolsista_desiste, distTrab_desiste, distCasa_desiste]).T
     X_continua = np.vstack([curso_continua, turnos_continua, periodo_continua, faltas_continua, reprovacoes_continua, convivio_continua, psicologico_continua, sexos_continua, idade_continua, filhos_continua, rendaFamiliar_continua, trabalha_continua, bolsista_continua, distTrab_continua, distCasa_continua]).T
