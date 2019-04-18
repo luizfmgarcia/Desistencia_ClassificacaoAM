@@ -39,14 +39,15 @@ def genData():
     # Faltas(%): 
     # A % representa a relacao do numero faltas ao numero total de aulas cursadas ate agora pelo aluno
     # quem falta mais tende a desistir mais facilmente
-    faltas_desiste = np.random.normal(30, 10, QTDE_DESISTE)
-    faltas_continua = np.random.normal(10, 5, QTDE_CONTINUA)
+    faltas_desiste = np.absolute(np.round(np.random.normal(30, 10, QTDE_DESISTE), 2))
+    faltas_continua = np.absolute(np.round(np.random.normal(10, 5, QTDE_CONTINUA), 2))
     
     # Reprovacoes no curso (escalar):
     # quem reprova mais tende a desistir mais facilmente
     reprovacoes_desiste = np.random.uniform(0, 25, QTDE_DESISTE)
     reprovacoes_continua = np.random.uniform(0, 15, QTDE_CONTINUA)
-    
+    reprovacoes_desiste = reprovacoes_desiste.astype('int32')
+    reprovacoes_continua = reprovacoes_continua.astype('int32')
     # Convivio:
     # Pessimo convivio pode facilitar na decisao de desistencia
     # se sente: Otimo(0); Bom(1); Razoavel(2); Ruim(3); Pessimo(4); 
@@ -83,6 +84,7 @@ def genData():
     idade_desiste3 = np.random.uniform(36, 60, int(QTDE_DESISTE*0.1))
     idade_desiste = np.append(idade_desiste1, idade_desiste2)
     idade_desiste = np.append(idade_desiste, idade_desiste3)
+    idade_desiste = idade_desiste.astype('int32')
     #while(idade_desiste.size < QTDE_DESISTE):
     #    idade_desiste = np.append(idade_desiste, np.random.normal(20, 3, int(QTDE_DESISTE*0.8)))    
     
@@ -91,6 +93,7 @@ def genData():
     idade_continua3 = np.random.uniform(36, 60, int(QTDE_CONTINUA*0.3))
     idade_continua = np.append(idade_continua1, idade_continua2)
     idade_continua = np.append(idade_continua, idade_continua3)
+    idade_continua = idade_continua.astype('int32')
     #while(idade_continua.size < QTDE_CONTINUA):
     #    idade_continua = np.append(idade_continua, np.random.uniform(24, 35, int(QTDE_CONTINUA*0.5)))  
     
@@ -194,7 +197,7 @@ def genData():
     distTrab_desiste = np.array(None)
     for trabalha in trabalha_desiste:
         if(trabalha):
-            distTrab_desiste = np.append(distTrab_desiste, np.random.normal(20, 10, 1))    
+            distTrab_desiste = np.append(distTrab_desiste, np.absolute(np.round(np.random.normal(25, 5, 1), 2)))    
         else:
             distTrab_desiste = np.append(distTrab_desiste, 0)
     distTrab_desiste = np.delete(distTrab_desiste, 0)
@@ -202,15 +205,15 @@ def genData():
     distTrab_continua = np.array(None)        
     for trabalha in trabalha_continua:
         if(trabalha):
-            distTrab_continua = np.append(distTrab_continua, np.random.uniform(0, 10, 1))    
+            distTrab_continua = np.append(distTrab_continua, np.round(np.random.uniform(0, 20, 1), 2))    
         else:  
             distTrab_continua = np.append(distTrab_continua, 0) 
     distTrab_continua = np.delete(distTrab_continua, 0)
     
     # DistCasa (Km):
     # quem mora mais longe tende a desistir mais facilmente (pelo cansaço, stress do transito etc)
-    distCasa_desiste = np.random.normal(30, 10, QTDE_DESISTE)
-    distCasa_continua = np.random.uniform(10, 10, QTDE_CONTINUA)    
+    distCasa_desiste = np.absolute(np.round(np.random.normal(25, 5, QTDE_DESISTE), 2))
+    distCasa_continua = np.round(np.random.uniform(0, 20, QTDE_CONTINUA), 2)   
 
     # Juntando tudo
     X_desiste = np.vstack([curso_desiste, turnos_desiste, periodo_desiste, faltas_desiste, reprovacoes_desiste, convivio_desiste, psicologico_desiste, sexos_desiste, idade_desiste, filhos_desiste, rendaFamiliar_desiste, trabalha_desiste, bolsista_desiste, distTrab_desiste, distCasa_desiste]).T

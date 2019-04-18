@@ -29,7 +29,7 @@ class main:
     print(clf, scores.mean(), scores.std())
     ioData.outResult(scores.mean(), scores.std(), clf)
     
-    # Testando o modelo gerado
+    # Testando o modelo gerado para novas entradas
     escolha = input('Voce quer testar um novo aluno?(s/n): ')
     while(escolha=='s'):
         dados = input('Valores (separados por virgulas): ')
