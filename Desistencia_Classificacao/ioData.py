@@ -63,7 +63,7 @@ def outDataBase(X, y):
         
 #=============================================================================================================
 
-def outResult(mean, std, clf):
+def outResult(mean, std, clf, X, falso_positivo, falso_negativo):
     print("Exporting result....",)
     
     # (Re)Creating Database file and director
@@ -79,10 +79,47 @@ def outResult(mean, std, clf):
     outName = newDir + 'result.csv'                
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        #spamwriter.writerow(['', ''])
+        
+        spamwriter.writerow(["Classificador: ", str(clf)])
+        spamwriter.writerow([])
+        
         row = np.append(mean, std)
+        spamwriter.writerow(["Media e Desvio Padrão do modelo gerado: "])
+        spamwriter.writerow([mean, std])
+        spamwriter.writerow([])
+        
+        spamwriter.writerow(["Numero de vetores de suporte para cada classe: "])
+        spamwriter.writerow(clf.n_support_)
+        spamwriter.writerow([])
+        
+        spamwriter.writerow(["Indices dos vetores de suporte: "])
         spamwriter.writerow(row)
-        spamwriter.writerow([str(clf)])
+        spamwriter.writerow([])
+        
+        spamwriter.writerow(["Coeficientes na função de decisão dual: "])
+        for row in clf.dual_coef_:
+            spamwriter.writerow(row)
+        spamwriter.writerow([])
+        
+        spamwriter.writerow(["Pesos atribuídos às características (coeficientes no problema primal): "])
+        for row in clf.coef_:
+            spamwriter.writerow(row)
+        spamwriter.writerow([])
+        
+        spamwriter.writerow(["Constantes na função de decisão: "])
+        spamwriter.writerow(clf.intercept_)
+        spamwriter.writerow([])
+        
+        spamwriter.writerow(["Numero de Falsos Positivos que a base de treinamento possui: "])
+        spamwriter.writerow([falso_positivo])
+        spamwriter.writerow(["Numero de Falsos Negativos que a base de treinamento possui: "])
+        spamwriter.writerow([falso_negativo])
+        spamwriter.writerow([])
+    
+        spamwriter.writerow(["Resultados dos objetos de entrada para o modelo aprendido:"])
+        spamwriter.writerow(clf.decision_function(X))
+        spamwriter.writerow([])
+        
     csvfile.close()  
     print ("Result Saved!")
 
