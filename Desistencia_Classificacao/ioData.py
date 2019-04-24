@@ -63,7 +63,7 @@ def outDataBase(X, y):
         
 #=============================================================================================================
 
-def outResult(mean, std, clf, X, falso_positivo, falso_negativo):
+def outResult(scores, clf, X, y, falso_positivo, falso_negativo):
     print("Exporting result....",)
     
     # (Re)Creating Database file and director
@@ -83,9 +83,10 @@ def outResult(mean, std, clf, X, falso_positivo, falso_negativo):
         spamwriter.writerow(["Classificador: ", str(clf)])
         spamwriter.writerow([])
         
-        row = np.append(mean, std)
-        spamwriter.writerow(["Media e Desvio Padrão do modelo gerado: "])
-        spamwriter.writerow([mean, std])
+        spamwriter.writerow(["Score do modelo aplicado à essa base: "])
+        spamwriter.writerow([clf.score(X, y)])
+        spamwriter.writerow(["Media e Desvio Padrão (Validação Cruzada): "])
+        spamwriter.writerow([scores.mean(), scores.std()])
         spamwriter.writerow([])
         
         spamwriter.writerow(["Numero de vetores de suporte para cada classe: "])
@@ -93,7 +94,7 @@ def outResult(mean, std, clf, X, falso_positivo, falso_negativo):
         spamwriter.writerow([])
         
         spamwriter.writerow(["Indices dos vetores de suporte: "])
-        spamwriter.writerow(row)
+        spamwriter.writerow(clf.support_)
         spamwriter.writerow([])
         
         spamwriter.writerow(["Coeficientes na função de decisão dual: "])

@@ -50,7 +50,8 @@ class main:
     print()
     print("Classificador: ", clf)
     print()
-    print("Media e Desvio Padrão do modelo gerado: ", scores.mean(), scores.std())    
+    print("Score do modelo aplicado à essa base: ", clf.score(X, y))
+    print("Media e Desvio Padrão (Validação Cruzada): ", scores.mean(), scores.std())    
     print()
     print("Numero de vetores de suporte para cada classe: ", clf.n_support_)
     print()
@@ -67,7 +68,7 @@ class main:
     print("Numero de Falsos Positivos que a base de treinamento possui: ", falso_positivo)
     print("Numero de Falsos Negativos que a base de treinamento possui: ", falso_negativo)
     print()
-    ioData.outResult(scores.mean(), scores.std(), clf, X, falso_positivo, falso_negativo)
+    ioData.outResult(scores, clf, X, y, falso_positivo, falso_negativo)
     print()
     
     #=================================================
@@ -82,9 +83,10 @@ class main:
     falso_positivo_new = np.count_nonzero(result_zeros_new)
     falso_negativo_new = result_uns_new.size-np.count_nonzero(result_uns_new)
     print("Nova base para testes possui (objetos) para cada classe: ", int(teste/2))
+    print("Score do modelo aplicado à essa base: ", clf.score(X_new, y_new))
+    print("Media e Desvio Padrão (Validação Cruzada): ", scores_new.mean(), scores_new.std())
     print("Numero de Falsos Positivos que a nova base de teste possui: ", falso_positivo_new)
     print("Numero de Falsos Negativos que a nova base de teste possui: ", falso_negativo_new)
-    print("Media e Desvio Padrão da nova Base para o modelo gerado: ", scores_new.mean(), scores_new.std())
     
     #=================================================
     
