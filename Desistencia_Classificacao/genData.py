@@ -4,10 +4,7 @@ import numpy as np
 
 #==============================================================================================================            
 
-def genData():
-    
-    QTDE_CONTINUA = 1500
-    QTDE_DESISTE = 1500
+def genData(QTDE_DESISTE, QTDE_CONTINUA):
     
     # Cursos:
     # Humanas(0); Exatas(1); Biologicas(2); Engenharias(3); Licenciaturas(4);
@@ -39,8 +36,8 @@ def genData():
     # Faltas(%): 
     # A % representa a relacao do numero faltas ao numero total de aulas cursadas ate agora pelo aluno
     # quem falta mais tende a desistir mais facilmente
-    faltas_desiste = np.absolute(np.round(np.random.normal(30, 10, QTDE_DESISTE), 2))
-    faltas_continua = np.absolute(np.round(np.random.normal(10, 5, QTDE_CONTINUA), 2))
+    faltas_desiste = np.absolute(np.round(np.random.normal(30, 10, QTDE_DESISTE), 0))
+    faltas_continua = np.absolute(np.round(np.random.normal(10, 5, QTDE_CONTINUA), 0))
     
     # Reprovacoes no curso (escalar):
     # quem reprova mais tende a desistir mais facilmente
@@ -219,7 +216,7 @@ def genData():
     X_desiste = np.vstack([curso_desiste, turnos_desiste, periodo_desiste, faltas_desiste, reprovacoes_desiste, convivio_desiste, psicologico_desiste, sexos_desiste, idade_desiste, filhos_desiste, rendaFamiliar_desiste, trabalha_desiste, bolsista_desiste, distTrab_desiste, distCasa_desiste]).T
     X_continua = np.vstack([curso_continua, turnos_continua, periodo_continua, faltas_continua, reprovacoes_continua, convivio_continua, psicologico_continua, sexos_continua, idade_continua, filhos_continua, rendaFamiliar_continua, trabalha_continua, bolsista_continua, distTrab_continua, distCasa_continua]).T
     X = np.vstack([X_desiste, X_continua]) # primeiro as desistencias, depois as continuidades
-    y = np.array([1]*QTDE_DESISTE + [0]*QTDE_CONTINUA) # desiste = 1; continua = 0
+    y = np.array([0]*QTDE_DESISTE + [1]*QTDE_CONTINUA) # desiste = 0; continua = 1
     
     return X, y
 

@@ -32,6 +32,7 @@ def getData():
                 y.append(float(row[-1]))
     csvfile.close()     
     print ("Data Obtained!")
+    
     return np.array(X), np.array(y)
         
 #==============================================================================================================             
