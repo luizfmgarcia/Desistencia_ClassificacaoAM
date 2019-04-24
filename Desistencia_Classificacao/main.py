@@ -44,7 +44,9 @@ class main:
     
     #=================================================    
 
-    # Apresentando e Salvando o resultado    
+    # Apresentando e Salvando o resultado
+    print()
+    print("Base para treinamento possui (objetos) para cada classe: ", QTDE_CONTINUA)    
     print()
     print("Classificador: ", clf)
     print()
