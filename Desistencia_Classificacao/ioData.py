@@ -63,7 +63,7 @@ def outDataBase(X, y):
         
 #=============================================================================================================
 
-def outResult(scores, clf, X, y, falso_positivo, falso_negativo):
+def outResult(scores, clf, X_transformed, X, y, falso_positivo, falso_negativo):
     print("Exporting result....",)
     
     # (Re)Creating Database file and director
@@ -119,6 +119,10 @@ def outResult(scores, clf, X, y, falso_positivo, falso_negativo):
     
         spamwriter.writerow(["Resultados dos objetos de entrada para o modelo aprendido:"])
         spamwriter.writerow(clf.decision_function(X))
+        spamwriter.writerow([])
+            
+        spamwriter.writerow(["Objetos transformados:"])
+        spamwriter.writerow(X_transformed)
         spamwriter.writerow([])
         
     csvfile.close()  
