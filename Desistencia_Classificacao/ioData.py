@@ -11,8 +11,8 @@ import numpy as np
     
 # Get all data to work
 def getData(): 
-    X = [] #row 0 to 13
-    y = [] #row 14
+    X = []
+    y = [] # ultima coluna
     # Read the data and fill respective vectors
     first = True
     currentDir = os.getcwd()
@@ -53,7 +53,7 @@ def outDataBase(X, y):
     outName = newDir + 'dataBase.csv'                
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';')
-        spamwriter.writerow(['Curso', 'TurnoAulas', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'Convivio', 'Psicologico', 'Sexo', 'Idade', 'PossuiFilhos', 'RendaFamiliar', 'Trabalha', 'Bolsista', 'DistTrabalho', 'DistCasa', 'y'])
+        spamwriter.writerow(['CursoHumana', 'CursoExata', 'CursoBiologica', 'CursoEngenharia', 'CursoLicenciatura', 'TurnoAulasMatutino', 'TurnoAulasVespertino', 'TurnoAulasNoturno', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'PerConvivencia', 'PerStress', 'SexoFeminino', 'SexoMasculino', 'Idade', 'PossuiFilhos', 'RendaFamiliar', 'Trabalha', 'Bolsista', 'DistTrabalho', 'DistCasa', 'y'])
         i=0
         for i in range(y.size):
             row = np.append(X[i], y[i])
