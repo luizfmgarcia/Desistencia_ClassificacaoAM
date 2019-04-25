@@ -9,8 +9,8 @@ def genData(QTDE_DESISTE, QTDE_CONTINUA):
     # Cursos:
     # Humanas(0); Exatas(1); Biologicas(2); Engenharias(3); Licenciaturas(4);
     # exatas e engenharias - maiores desistencias
-    vetores_desiste = [[], [], [], [], []]
-    vetores_continua = [[], [], [], [], []]
+    vetores_desiste = [np.array(None), np.array(None), np.array(None), np.array(None), np.array(None)]
+    vetores_continua = [np.array(None), np.array(None), np.array(None), np.array(None), np.array(None)]
     cursos = range(0, 5)
     prob_desiste = [0.1, 0.3, 0.15, 0.35, 0.1]
     prob_continua = [0.25, 0.2, 0.2, 0.1, 0.25]
@@ -22,33 +22,33 @@ def genData(QTDE_DESISTE, QTDE_CONTINUA):
         j=0
         for j in range(len(cursos)):
             if(j == curso_desiste):
-                vetores_desiste[j].append(1)
+                vetores_desiste[j] = np.append(vetores_desiste[j], 1)
             else:
-                vetores_desiste[j].append(0)
+                vetores_desiste[j]= np.append(vetores_desiste[j], 0)
             if(j == curso_continua):
-                vetores_continua[j].append(1)
+                vetores_continua[j]= np.append(vetores_continua[j], 1)
             else:
-                vetores_continua[j].append(0)
+                vetores_continua[j]= np.append(vetores_continua[j], 0)
                 
-    curso0_desiste = np.array(vetores_desiste[0])
-    curso1_desiste = np.array(vetores_desiste[1])
-    curso2_desiste = np.array(vetores_desiste[2])
-    curso3_desiste = np.array(vetores_desiste[3])
-    curso4_desiste = np.array(vetores_desiste[4])
+    curso0_desiste = np.delete(vetores_desiste[0], 0)
+    curso1_desiste = np.delete(vetores_desiste[1], 0)
+    curso2_desiste = np.delete(vetores_desiste[2], 0)
+    curso3_desiste = np.delete(vetores_desiste[3], 0)
+    curso4_desiste = np.delete(vetores_desiste[4], 0)
     
-    curso0_continua = np.array(vetores_continua[0])
-    curso1_continua = np.array(vetores_continua[1])
-    curso2_continua = np.array(vetores_continua[2])
-    curso3_continua = np.array(vetores_continua[3])
-    curso4_continua = np.array(vetores_continua[4])
+    curso0_continua = np.delete(vetores_continua[0], 0)
+    curso1_continua = np.delete(vetores_continua[1], 0)
+    curso2_continua = np.delete(vetores_continua[2], 0)
+    curso3_continua = np.delete(vetores_continua[3], 0)
+    curso4_continua = np.delete(vetores_continua[4], 0)
     
     #=========================================================
     
     # Turno que as aulas ocorrem:
     # Matutino(0); Vespertino(1); Noturno(2);
     # um pouco maior o numero de desistencias no noturno pelo: cansaço, menos tempo de estudo, etc
-    vetores_desiste = [[], [], []]
-    vetores_continua = [[], [], []]
+    vetores_desiste = [np.array(None), np.array(None), np.array(None)]
+    vetores_continua = [np.array(None), np.array(None), np.array(None)]
     turnos = range(0, 3)
     prob_desiste = [0.3, 0.3, 0.4]
     prob_continua = [0.35, 0.35, 0.3]
@@ -60,21 +60,21 @@ def genData(QTDE_DESISTE, QTDE_CONTINUA):
         j=0
         for j in range(len(turnos)):
             if(j == turnos_desiste):
-                vetores_desiste[j].append(1)
+                vetores_desiste[j] = np.append(vetores_desiste[j], 1)
             else:
-                vetores_desiste[j].append(0)
+                vetores_desiste[j] = np.append(vetores_desiste[j], 0)
             if(j == turnos_continua):
-                vetores_continua[j].append(1)
+                vetores_continua[j] = np.append(vetores_continua[j], 1)
             else:
-                vetores_continua[j].append(0)
+                vetores_continua[j] = np.append(vetores_continua[j], 0)
                 
-    turno0_desiste = np.array(vetores_desiste[0])
-    turno1_desiste = np.array(vetores_desiste[1])
-    turno2_desiste = np.array(vetores_desiste[2])
+    turno0_desiste = np.delete(vetores_desiste[0], 0)
+    turno1_desiste = np.delete(vetores_desiste[1], 0)
+    turno2_desiste = np.delete(vetores_desiste[2], 0)
     
-    turno0_continua = np.array(vetores_continua[0])
-    turno1_continua = np.array(vetores_continua[1])
-    turno2_continua = np.array(vetores_continua[2])
+    turno0_continua = np.delete(vetores_continua[0], 0)
+    turno1_continua = np.delete(vetores_continua[1], 0)
+    turno2_continua = np.delete(vetores_continua[2], 0)
     
     #=========================================================
     
@@ -84,96 +84,96 @@ def genData(QTDE_DESISTE, QTDE_CONTINUA):
     periodos = range(0, 3)
     prob_desiste = [0.7, 0.2, 0.1]
     prob_continua = [0.1, 0.2, 0.7]
-    periodo_desiste = []
-    periodo_continua = []
+    periodo_desiste = np.array(None)
+    periodo_continua = np.array(None)
     
     i = 0
     for i in range(QTDE_CONTINUA):
         desiste = np.random.choice(periodos, 1, p=prob_desiste)
         if(desiste == 0):
-            periodo_desiste.append(np.random.uniform(1, 6, 1))
+            periodo_desiste = np.append(periodo_desiste, np.random.uniform(1, 6, 1))
         elif(desiste == 1):
-            periodo_desiste.append(np.random.uniform(7, 24, 1))
+            periodo_desiste = np.append(periodo_desiste, np.random.uniform(7, 24, 1))
         elif(desiste == 2):
-            periodo_desiste.append(np.random.uniform(25, 48, 1))
+            periodo_desiste = np.append(periodo_desiste, np.random.uniform(25, 48, 1))
         
         continua = np.random.choice(periodos, 1, p=prob_continua)
         if(continua == 0):
-            periodo_continua.append(np.random.uniform(1, 6, 1))
+            periodo_continua = np.append(periodo_continua, np.random.uniform(1, 6, 1))
         elif(continua == 1):
-            periodo_continua.append(np.random.uniform(7, 24, 1))
+            periodo_continua = np.append(periodo_continua, np.random.uniform(7, 24, 1))
         elif(continua == 2):
-            periodo_continua.append(np.random.uniform(25, 48, 1))   
+            periodo_continua = np.append(periodo_continua, np.random.uniform(25, 48, 1))   
     
-    periodo_desiste = np.array(periodo_desiste)
-    periodo_continua = np.array(periodo_continua)
+    periodo_desiste = np.delete(periodo_desiste, 0).astype('int32')
+    periodo_continua = np.delete(periodo_continua, 0).astype('int32')
     
     #=========================================================
     
     # Faltas(% de 0 a 100): 
     # A % representa a relacao do numero faltas ao numero total de aulas cursadas ate agora pelo aluno
     # quem falta mais tende a desistir mais facilmente
-    faltas_desiste = np.absolute(np.round(np.random.normal(30, 15, QTDE_DESISTE), 0))
-    faltas_continua = np.absolute(np.round(np.random.normal(10, 5, QTDE_CONTINUA), 0))
+    faltas_desiste = np.absolute(np.round(np.random.normal(30, 15, QTDE_DESISTE), 2))
+    faltas_continua = np.absolute(np.round(np.random.normal(10, 5, QTDE_CONTINUA), 2))
     
     #=========================================================
     
     # Reprovacoes no curso (escalar):
     # quem reprova mais tende a desistir mais facilmente
-    reprovacoes_desiste = np.round(np.random.uniform(0, 15, QTDE_DESISTE), 0)
-    reprovacoes_continua = np.absolute(np.round(np.random.normal(5, 2, QTDE_CONTINUA), 0))
+    reprovacoes_desiste = np.random.uniform(0, 15, QTDE_DESISTE).astype('int32')
+    reprovacoes_continua = np.absolute(np.random.normal(5, 2, QTDE_CONTINUA)).astype('int32')
     
     #=========================================================
     
     # Convivencia(% de 0 a 100):
     # Pessimo convivio pode facilitar na decisao de desistencia
     # nivel mais baixo (pessimo) 0 / nivel alto (otimo) 100
-    convivio_desiste = []
-    convivio_continua = []
+    convivio_desiste = np.array(None)
+    convivio_continua = np.array(None)
     
     i = 0
     for i in range(QTDE_CONTINUA):
-        desiste = np.absolute(np.round(np.random.normal(30, 15, 1), 0))
-        continua = np.absolute(np.round(np.random.normal(70, 15, 1), 0))
-        if(desiste>100):
-            desiste = 100
-        if(continua>100):
-            continua = 100
-        convivio_desiste.append(desiste)
-        convivio_continua.append(continua)
+        desiste = np.absolute(np.round(np.random.normal(30, 15, 1), 2))
+        continua = np.absolute(np.round(np.random.normal(70, 15, 1), 2))
+        if(desiste>100.0):
+            desiste = 100.0
+        if(continua>100.0):
+            continua = 100.0
+        convivio_desiste = np.append(convivio_desiste, desiste)
+        convivio_continua = np.append(convivio_continua, continua)
         
-    convivio_desiste = np.array(convivio_desiste)
-    convivio_continua = np.array(convivio_continua)
+    convivio_desiste = np.delete(convivio_desiste, 0)
+    convivio_continua = np.delete(convivio_continua, 0)
     
     #=========================================================
     
     # Nivel de Stress(% de 0 a 100):
     # baixo stress 0 / alto stress 100 
     # quem esta com mais stress tende mais a desistir
-    stress_desiste = []
-    stress_continua = []
+    stress_desiste = np.array(None)
+    stress_continua = np.array(None)
     
     i = 0
     for i in range(QTDE_CONTINUA):
-        desiste = np.absolute(np.round(np.random.normal(70, 15, 1), 0))
-        continua = np.absolute(np.round(np.random.normal(30, 15, 1), 0))
+        desiste = np.absolute(np.round(np.random.normal(70, 15, 1), 2))
+        continua = np.absolute(np.round(np.random.normal(30, 15, 1), 2))
         if(desiste>100):
             desiste = 100
         if(continua>100):
             continua = 100
-        stress_desiste.append(desiste)
-        stress_continua.append(continua)
-     
-    stress_desiste = np.array(stress_desiste)
-    stress_continua = np.array(stress_continua)  
+        stress_desiste = np.append(stress_desiste, desiste)
+        stress_continua = np.append(stress_continua, continua)
+        
+    stress_desiste = np.delete(stress_desiste, 0)
+    stress_continua = np.delete(stress_continua, 0) 
     
     #=========================================================                                       
     
     # Sexo:
     # Feminino(0); Masculino(1)
     # mulheres sao mais responsaveis
-    vetores_desiste = [[], []]
-    vetores_continua = [[], []]
+    vetores_desiste = [np.array(None), np.array(None)]
+    vetores_continua = [np.array(None), np.array(None)]
     sexos = range(0, 2)
     prob_desiste = [0.48, 0.52]
     prob_continua = [0.52, 0.48]
@@ -185,39 +185,39 @@ def genData(QTDE_DESISTE, QTDE_CONTINUA):
         j=0
         for j in range(len(sexos)):
             if(j == sexos_desiste):
-                vetores_desiste[j].append(1)
+                vetores_desiste[j] = np.append(vetores_desiste[j], 1)
             else:
-                vetores_desiste[j].append(0)
+                vetores_desiste[j] = np.append(vetores_desiste[j], 0)
             if(j == sexos_continua):
-                vetores_continua[j].append(1)
+                vetores_continua[j] = np.append(vetores_continua[j], 1)
             else:
-                vetores_continua[j].append(0)
+                vetores_continua[j] = np.append(vetores_continua[j], 0)
                 
-    sexo0_desiste = np.array(vetores_desiste[0])
-    sexo1_desiste = np.array(vetores_desiste[1])
+    sexo0_desiste = np.delete(vetores_desiste[0], 0)
+    sexo1_desiste = np.delete(vetores_desiste[1], 0)
     
-    sexo0_continua = np.array(vetores_continua[0])
-    sexo1_continua = np.array(vetores_continua[1])
+    sexo0_continua = np.delete(vetores_continua[0], 0)
+    sexo1_continua = np.delete(vetores_continua[1], 0)
     
     #=========================================================
     
     # Idade dos alunos (entre 17 - 60):
     # maior parte entre 17 e 30 (80%);
     # maior desistencia entre os jovens ate 23 anos (ainda indecisos e em tempo de mudar de curso)
-    idade_desiste1 = np.random.normal(20, 3, int(QTDE_DESISTE*0.7))
+    idade_desiste1 = np.absolute(np.random.normal(20, 3, int(QTDE_DESISTE*0.7)))
     idade_desiste2 = np.random.uniform(24, 35, int(QTDE_DESISTE*0.2))
     idade_desiste3 = np.random.uniform(36, 60, int(QTDE_DESISTE*0.1))
     idade_desiste = np.append(idade_desiste1, idade_desiste2)
-    idade_desiste = np.round(np.append(idade_desiste, idade_desiste3), 0)
+    idade_desiste = np.append(idade_desiste, idade_desiste3).astype('int32')
     #idade_desiste = idade_desiste.astype('int32')
     #while(idade_desiste.size < QTDE_DESISTE):
     #    idade_desiste = np.append(idade_desiste, np.random.normal(20, 3, int(QTDE_DESISTE*0.8)))
     
-    idade_continua1 = np.random.normal(20, 3, int(QTDE_CONTINUA*0.2))
+    idade_continua1 = np.absolute(np.random.normal(20, 3, int(QTDE_CONTINUA*0.2)))
     idade_continua2 = np.random.uniform(24, 35, int(QTDE_CONTINUA*0.5))
     idade_continua3 = np.random.uniform(36, 60, int(QTDE_CONTINUA*0.3))
     idade_continua = np.append(idade_continua1, idade_continua2)
-    idade_continua = np.round(np.append(idade_continua, idade_continua3), 0)
+    idade_continua = np.append(idade_continua, idade_continua3).astype('int32')
     #idade_continua = idade_continua.astype('int32')
     #while(idade_continua.size < QTDE_CONTINUA):
     #    idade_continua = np.append(idade_continua, np.random.uniform(24, 35, int(QTDE_CONTINUA*0.5)))  
@@ -230,27 +230,36 @@ def genData(QTDE_DESISTE, QTDE_CONTINUA):
     # quem possui filho e tem mais de 30, a principio, e mais responsavel - menor desistencia
     # se tem menos de 30 pode acabar obtando por desistir mais facilmente
     filhos_desiste = np.array(None)
+    i = 0
     for idade in idade_desiste:
         if(idade<30):
             resultado = np.random.rand(1) < 0.1
-            if(resultado): filhos_desiste = np.append(filhos_desiste, 1)
-            else: filhos_desiste = np.append(filhos_desiste, 0)
+            if(resultado):
+                filhos_desiste = np.append(filhos_desiste, 1)
+            else:
+                filhos_desiste = np.append(filhos_desiste, 0)
         if(idade>=30):    
             resultado = np.random.rand(1) < 0.05
-            if(resultado): filhos_desiste = np.append(filhos_desiste, 1)
-            else: filhos_desiste = np.append(filhos_desiste, 0)
+            if(resultado):
+                filhos_desiste = np.append(filhos_desiste, 1)
+            else: 
+                filhos_desiste = np.append(filhos_desiste, 0)
     filhos_desiste = np.delete(filhos_desiste, 0)
     
     filhos_continua = np.array(None)        
     for idade in idade_continua:
         if(idade<30):
             resultado = np.random.rand(1) < 0.05
-            if(resultado): filhos_continua = np.append(filhos_continua, 1)
-            else: filhos_continua = np.append(filhos_continua, 0)
+            if(resultado):
+                filhos_continua = np.append(filhos_continua, 1)
+            else:
+                filhos_continua = np.append(filhos_continua, 0)
         if(idade>=30):    
             resultado = np.random.rand(1) < 0.15
-            if(resultado): filhos_continua = np.append(filhos_continua, 1)
-            else: filhos_continua = np.append(filhos_continua, 0)
+            if(resultado):
+                filhos_continua = np.append(filhos_continua, 1)
+            else:
+                filhos_continua = np.append(filhos_continua, 0)
     filhos_continua = np.delete(filhos_continua, 0)
     
     #=========================================================    
@@ -263,29 +272,29 @@ def genData(QTDE_DESISTE, QTDE_CONTINUA):
     rendaFamiliar = range(0, 3)
     prob_desiste = [0.3, 0.4, 0.3]
     prob_continua = [0.25, 0.5, 0.25]
-    rendaFamiliar_desiste = []
-    rendaFamiliar_continua = []
+    rendaFamiliar_desiste = np.array(None)
+    rendaFamiliar_continua = np.array(None)
     
     i = 0
     for i in range(QTDE_CONTINUA):
         desiste = np.random.choice(rendaFamiliar, 1, p=prob_desiste)
         if(desiste == 0):
-            rendaFamiliar_desiste.append(np.random.uniform(1, 3, 1))
+            rendaFamiliar_desiste = np.append(rendaFamiliar_desiste, np.random.uniform(1, 3, 1))
         elif(desiste == 1):
-            rendaFamiliar_desiste.append(np.random.uniform(4, 7, 1))
+            rendaFamiliar_desiste = np.append(rendaFamiliar_desiste, np.random.uniform(4, 7, 1))
         elif(desiste == 2):
-            rendaFamiliar_desiste.append(np.random.uniform(8, 12, 1))
+            rendaFamiliar_desiste = np.append(rendaFamiliar_desiste, np.random.uniform(8, 12, 1))
         
         continua = np.random.choice(rendaFamiliar, 1, p=prob_continua)
         if(continua == 0):
-            rendaFamiliar_continua.append(np.random.uniform(1, 3, 1))
+            rendaFamiliar_continua = np.append(rendaFamiliar_continua, np.random.uniform(1, 3, 1))
         elif(continua == 1):
-            rendaFamiliar_continua.append(np.random.uniform(4, 7, 1))
+            rendaFamiliar_continua = np.append(rendaFamiliar_continua, np.random.uniform(4, 7, 1))
         elif(continua == 2):
-            rendaFamiliar_continua.append(np.random.uniform(8, 12, 1))
+            rendaFamiliar_continua = np.append(rendaFamiliar_continua, np.random.uniform(8, 12, 1))
     
-    rendaFamiliar_desiste = np.array(rendaFamiliar_desiste)
-    rendaFamiliar_continua = np.array(rendaFamiliar_continua)  
+    rendaFamiliar_desiste = np.delete(rendaFamiliar_desiste, 0).astype('int32')
+    rendaFamiliar_continua = np.delete(rendaFamiliar_continua, 0).astype('int32')  
     
     #=========================================================    
 
@@ -293,27 +302,37 @@ def genData(QTDE_DESISTE, QTDE_CONTINUA):
     # matutino e vespertino sao muito poucos os que trabalham;
     # quem trabalha tende a desistir menos por almejar melhores posicoes na empresa
     trabalha_desiste = np.array(None)
-    for turno in turnos_desiste:
-        if(turno==2): # noturno
+    i = 0
+    for i in range(QTDE_DESISTE):
+        if(turno2_desiste[i]==1): # noturno
             resultado = np.random.rand(1) < 0.1
-            if(resultado): trabalha_desiste = np.append(trabalha_desiste, 1)
-            else: trabalha_desiste = np.append(trabalha_desiste, 0)
-        if(turno!=2): # matutino e vespertino   
+            if(resultado): 
+                trabalha_desiste = np.append(trabalha_desiste, 1)
+            else: 
+                trabalha_desiste = np.append(trabalha_desiste, 0)
+        else: # matutino e vespertino   
             resultado = np.random.rand(1) < 0.01
-            if(resultado): trabalha_desiste = np.append(trabalha_desiste, 1)
-            else: trabalha_desiste = np.append(trabalha_desiste, 0)
+            if(resultado): 
+                trabalha_desiste = np.append(trabalha_desiste, 1)
+            else: 
+                trabalha_desiste = np.append(trabalha_desiste, 0)
     trabalha_desiste = np.delete(trabalha_desiste, 0)
     
     trabalha_continua = np.array(None)        
-    for turno in turnos_continua:
-        if(turno==2): # noturno
+    i = 0
+    for i in range(QTDE_CONTINUA):
+        if(turno2_continua[i]==1): # noturno
             resultado = np.random.rand(1) < 0.8
-            if(resultado): trabalha_continua = np.append(trabalha_continua, 1)
-            else: trabalha_continua = np.append(trabalha_continua, 0)
-        if(turno!=2): # matutino e vespertino  
+            if(resultado): 
+                trabalha_continua = np.append(trabalha_continua, 1)
+            else: 
+                trabalha_continua = np.append(trabalha_continua, 0)
+        else: # matutino e vespertino  
             resultado = np.random.rand(1) < 0.1
-            if(resultado): trabalha_continua = np.append(trabalha_continua, 1)
-            else: trabalha_continua = np.append(trabalha_continua, 0) 
+            if(resultado): 
+                trabalha_continua = np.append(trabalha_continua, 1)
+            else: 
+                trabalha_continua = np.append(trabalha_continua, 0) 
     trabalha_continua = np.delete(trabalha_continua, 0)
     
     #=========================================================    
@@ -325,24 +344,32 @@ def genData(QTDE_DESISTE, QTDE_CONTINUA):
     for trabalha in trabalha_desiste:
         if(trabalha):
             resultado = np.random.rand(1) < 0.05
-            if(resultado): bolsista_desiste = np.append(bolsista_desiste, 1)
-            else: bolsista_desiste = np.append(bolsista_desiste, 0)
+            if(resultado):
+                bolsista_desiste = np.append(bolsista_desiste, 1)
+            else:
+                bolsista_desiste = np.append(bolsista_desiste, 0)
         else:  
             resultado = np.random.rand(1) < 0.1
-            if(resultado): bolsista_desiste = np.append(bolsista_desiste, 1)
-            else: bolsista_desiste = np.append(bolsista_desiste, 0)
+            if(resultado):
+                bolsista_desiste = np.append(bolsista_desiste, 1)
+            else:
+                bolsista_desiste = np.append(bolsista_desiste, 0)
     bolsista_desiste = np.delete(bolsista_desiste, 0)
     
     bolsista_continua = np.array(None)        
     for trabalha in trabalha_continua:
         if(trabalha):
             resultado = np.random.rand(1) < 0.2
-            if(resultado): bolsista_continua = np.append(bolsista_continua, 1)
-            else: bolsista_continua = np.append(bolsista_continua, 0)
+            if(resultado):
+                bolsista_continua = np.append(bolsista_continua, 1)
+            else:
+                bolsista_continua = np.append(bolsista_continua, 0)
         else:  
             resultado = np.random.rand(1) < 0.8
-            if(resultado): bolsista_continua = np.append(bolsista_continua, 1)
-            else: bolsista_continua = np.append(bolsista_continua, 0) 
+            if(resultado):
+                bolsista_continua = np.append(bolsista_continua, 1)
+            else:
+                bolsista_continua = np.append(bolsista_continua, 0) 
     bolsista_continua = np.delete(bolsista_continua, 0)
     
     #=========================================================    

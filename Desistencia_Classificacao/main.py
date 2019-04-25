@@ -9,8 +9,7 @@ from sklearn.preprocessing import StandardScaler
 
 class main:
 
-    QTDE_DESISTE = 3000        
-    QTDE_CONTINUA = 3000
+    QTDE_DESISTE = QTDE_CONTINUA = 500
     
     print("#=================================================")
     print("Podemos prever, baseando em alguns dados de um certo aluno universitario, se ele ira, muito provavelmete, continuar (1) ou desistir (0) do curso em algum momento proximo?")
@@ -30,7 +29,7 @@ class main:
     #=================================================
     
     # Normalizando os dados
-    X_treino_escalar, y_treino_escalar = genData.genData(int(QTDE_DESISTE/4), int(QTDE_CONTINUA/4))
+    X_treino_escalar, y_treino_escalar = genData.genData(int(QTDE_DESISTE/2), int(QTDE_CONTINUA/2))
     scaler = StandardScaler()
     scaler.fit(X)
     print("#=================================================")
@@ -84,7 +83,8 @@ class main:
     print()
     print("Numero de vetores de suporte para cada classe: ", clf.n_support_)
     print()
-    print("Indices dos vetores de suporte e um objeto que e sv: ", clf.support_, scaler.inverse_transform(clf.support_vectors_[0]))
+    print("Indices dos vetores de suporte: ", clf.support_)
+    print("Um objeto que e vetor suporte: ", scaler.inverse_transform(clf.support_vectors_[0]))
     print()
     print("Coeficientes na funcao de decisao dual: ", clf.dual_coef_)
     print()
@@ -92,8 +92,8 @@ class main:
     print()
     print("Constantes na funcao de decisao: ", clf.intercept_)
     print()
-    print("Resultados dos objetos de entrada para o modelo aprendido", clf.decision_function(X_transformed))
-    print()
+    #print("Resultados dos objetos de entrada para o modelo aprendido", clf.decision_function(X_transformed))
+    #print()
     print("Numero de Falsos Positivos que a base de treinamento possui: ", falso_positivo)
     print("Numero de Falsos Negativos que a base de treinamento possui: ", falso_negativo)
     print("Indices destes objetos 'erroneamente' classificados pelo modelo aprendido: ", indices_falsosPN)
@@ -103,7 +103,7 @@ class main:
     #=================================================
     
     # Testando o modelo com novos dados
-    teste = 6000
+    teste = QTDE_CONTINUA+QTDE_DESISTE
     X_test, y_test = genData.genData(int(teste/2), int(teste/2))
     X_test_transformed = scaler.transform(X_test)
     scores_test = cross_val_score(clf, X_test_transformed, y_test, cv =10)
