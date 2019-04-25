@@ -11,11 +11,10 @@ class main:
 
     QTDE_DESISTE = 3000        
     QTDE_CONTINUA = 3000
+    
     print("#=================================================")
     print("Podemos prever, baseando em alguns dados de um certo aluno universitario, se ele ira, muito provavelmete, continuar (1) ou desistir (0) do curso em algum momento proximo?")
     escolha = input('Para tal, voce gostaria de ciar uma nova base de dados (s/n)? Se já há uma base, ela será apagada caso sim: ')
-    
-    #=================================================
     
     if(escolha=='s'):
         # Estas duas linhas criam e salvam uma nova base de dados
@@ -35,13 +34,13 @@ class main:
     scaler = StandardScaler()
     scaler.fit(X)
     print("#=================================================")
-    print("Encontrando a Normalizção dos objetos:")
+    print("Encontrando a Normalizacao dos objetos:")
     print()
-    print("Valor médio de cada característica: ", scaler.mean_)
+    print("Valor medio encontrado para cada caracteristica na base de treinamento do Scaler: ", scaler.mean_)
     print()
-    print("Variância de cada característica: ", scaler.var_)
+    print("Variancia de cada caracteristica: ", scaler.var_)
     print()
-    print("Dimensionamento relativo a cada característica: ", scaler.scale_)
+    print("Dimensionamento relativo a cada caracteristica: ", scaler.scale_)
     
     
     #=================================================
@@ -59,6 +58,18 @@ class main:
     falso_positivo = np.count_nonzero(result_zeros)
     falso_negativo = result_uns.size-np.count_nonzero(result_uns)
     
+    # Encontrando os indices dos objetos da base erroneamente classificados pelo modelo aprendido 
+    indices_falsosPN = []
+    i = 0
+    for i in range(result_zeros.size):
+        if(result_zeros[i]==1):
+            indices_falsosPN.append(i)
+    i = i+1       
+    j = 0       
+    for j in range(result_uns.size):
+        if(result_uns[j]==0):
+            indices_falsosPN.append(i+j)       
+        
     #=================================================    
 
     # Apresentando e Salvando o resultado
@@ -68,30 +79,31 @@ class main:
     print()
     print("Classificador: ", clf)
     print()
-    print("Score do modelo aplicado à essa base: ", clf.score(X_transformed, y))
-    print("Media e Desvio Padrão (Validação Cruzada): ", scores.mean(), scores.std())    
+    print("Score do modelo aplicado a essa base: ", clf.score(X_transformed, y))
+    print("Media e Desvio Padrao (Validacao Cruzada de 10 pastas): ", scores.mean(), scores.std())    
     print()
     print("Numero de vetores de suporte para cada classe: ", clf.n_support_)
     print()
-    print("Indices dos vetores de suporte: ", clf.support_)
+    print("Indices dos vetores de suporte e um objeto que e sv: ", clf.support_, scaler.inverse_transform(clf.support_vectors_[0]))
     print()
-    print("Coeficientes na função de decisão dual: ", clf.dual_coef_)
+    print("Coeficientes na funcao de decisao dual: ", clf.dual_coef_)
     print()
-    print("Pesos atribuídos às características (coeficientes no problema primal): ", clf.coef_)
+    print("Pesos atribuidos as caracteristicas (coeficientes no problema primal): ", clf.coef_)
     print()
-    print("Constantes na função de decisão: ", clf.intercept_)
+    print("Constantes na funcao de decisao: ", clf.intercept_)
     print()
     print("Resultados dos objetos de entrada para o modelo aprendido", clf.decision_function(X_transformed))
     print()
     print("Numero de Falsos Positivos que a base de treinamento possui: ", falso_positivo)
     print("Numero de Falsos Negativos que a base de treinamento possui: ", falso_negativo)
+    print("Indices destes objetos 'erroneamente' classificados pelo modelo aprendido: ", indices_falsosPN)
     print()
-    ioData.outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_negativo)
+    ioData.outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_negativo, indices_falsosPN)
     
     #=================================================
     
     # Testando o modelo com novos dados
-    teste = 1000
+    teste = 6000
     X_test, y_test = genData.genData(int(teste/2), int(teste/2))
     X_test_transformed = scaler.transform(X_test)
     scores_test = cross_val_score(clf, X_test_transformed, y_test, cv =10)
@@ -104,8 +116,8 @@ class main:
     print("#=================================================")
     print()
     print("Nova base para testes possui (objetos) para cada classe: ", int(teste/2))
-    print("Score do modelo aplicado à essa base: ", clf.score(X_test_transformed, y_test))
-    print("Media e Desvio Padrão (Validação Cruzada): ", scores_test.mean(), scores_test.std())
+    print("Score do modelo aplicado a essa base: ", clf.score(X_test_transformed, y_test))
+    print("Media e Desvio Padrao (Validacao Cruzada de 10 pastas): ", scores_test.mean(), scores_test.std())
     print("Numero de Falsos Positivos que a nova base de teste possui: ", falso_positivo_test)
     print("Numero de Falsos Negativos que a nova base de teste possui: ", falso_negativo_test)
     
@@ -119,9 +131,9 @@ class main:
         novo_X = dados.split(';')
         i = 0
         for i in range(len(novo_X)):
-            novo_X[i] = float(novo_X[i])
-        aluno = scaler.transform(novo_X)    
-        print("Classificação, Prob. por classe e Valor resultante do modelo: ", clf.predict([aluno]), clf1.predict_proba([aluno]), clf1.decision_function([aluno]))
+            novo_X[i] = float(novo_X[i])    
+        aluno = scaler.transform(np.array([novo_X]))    
+        print("Classificacao, Prob. por classe e Valor resultante do modelo: ", clf.predict(aluno), clf.predict_proba(aluno), clf.decision_function(aluno))
         print()
         escolha = input('Voce quer testar um novo aluno?(s/n): ')    
         

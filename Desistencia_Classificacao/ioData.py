@@ -63,7 +63,7 @@ def outDataBase(X, y):
         
 #=============================================================================================================
 
-def outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_negativo):
+def outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_negativo, indices_falsosPN):
     print("Exporting result....",)
     
     # (Re)Creating Database file and director
@@ -80,23 +80,24 @@ def outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_ne
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
     
-        spamwriter.writerow(["Normalizção dos objetos"])
-        spamwriter.writerow(["Valor médio de cada característica: "])
+        spamwriter.writerow(["Normalizacao dos objetos"])
+        spamwriter.writerow(["Valor medio encontrado para cada caracteristica na base de treinamento do Scaler: "])
         spamwriter.writerow(scaler.mean_)
         spamwriter.writerow([])
-        spamwriter.writerow(["Variância de cada característica: "])
+        spamwriter.writerow(["Variancia de cada caracteristica: "])
         spamwriter.writerow(scaler.var_)
         spamwriter.writerow([])
-        spamwriter.writerow(["Dimensionamento relativo a cada característica: "])
+        spamwriter.writerow(["Dimensionamento relativo a cada caracteristica: "])
         spamwriter.writerow(scaler.scale_)
         spamwriter.writerow([])
     
-        spamwriter.writerow(["Classificador: ", str(clf)])
+        spamwriter.writerow(["Classificador: "])
+        spamwriter.writerow([str(clf)])
         spamwriter.writerow([])
         
-        spamwriter.writerow(["Score do modelo aplicado à essa base: "])
+        spamwriter.writerow(["Score do modelo aplicado a essa base: "])
         spamwriter.writerow([clf.score(X, y)])
-        spamwriter.writerow(["Media e Desvio Padrão (Validação Cruzada): "])
+        spamwriter.writerow(["Media e Desvio Padrao (Validacao Cruzada de 10 pastas): "])
         spamwriter.writerow([scores.mean(), scores.std()])
         spamwriter.writerow([])
         
@@ -107,17 +108,17 @@ def outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_ne
         spamwriter.writerow(clf.support_)
         spamwriter.writerow([])
         
-        spamwriter.writerow(["Coeficientes na função de decisão dual: "])
+        spamwriter.writerow(["Coeficientes na funcao de decisao dual: "])
         for row in clf.dual_coef_:
             spamwriter.writerow(row)
         spamwriter.writerow([])
         
-        spamwriter.writerow(["Pesos atribuídos às características (coeficientes no problema primal): "])
+        spamwriter.writerow(["Pesos atribuidos as caracteristicas (coeficientes no problema primal): "])
         for row in clf.coef_:
             spamwriter.writerow(row)
         spamwriter.writerow([])
         
-        spamwriter.writerow(["Constantes na função de decisão: "])
+        spamwriter.writerow(["Constantes na funcao de decisao: "])
         spamwriter.writerow(clf.intercept_)
         spamwriter.writerow([])
         
@@ -125,6 +126,8 @@ def outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_ne
         spamwriter.writerow([falso_positivo])
         spamwriter.writerow(["Numero de Falsos Negativos que a base de treinamento possui: "])
         spamwriter.writerow([falso_negativo])
+        spamwriter.writerow(["Indices destes objetos 'erroneamente' classificados pelo modelo aprendido: "])
+        spamwriter.writerow([indices_falsosPN])
         spamwriter.writerow([])
     
         spamwriter.writerow(["Resultados dos objetos de entrada para o modelo aprendido:"])
@@ -132,7 +135,8 @@ def outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_ne
         spamwriter.writerow([])
             
         spamwriter.writerow(["Objetos transformados:"])
-        spamwriter.writerow(X_transformed)
+        for row in X_transformed:
+            spamwriter.writerow(row)
         spamwriter.writerow([])
         
     csvfile.close()  
