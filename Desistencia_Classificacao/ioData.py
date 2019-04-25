@@ -63,7 +63,7 @@ def outDataBase(X, y):
         
 #=============================================================================================================
 
-def outResult(scores, clf, X_transformed, X, y, falso_positivo, falso_negativo):
+def outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_negativo):
     print("Exporting result....",)
     
     # (Re)Creating Database file and director
@@ -79,7 +79,18 @@ def outResult(scores, clf, X_transformed, X, y, falso_positivo, falso_negativo):
     outName = newDir + 'result.csv'                
     with open(outName, 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-        
+    
+        spamwriter.writerow(["Normalizção dos objetos"])
+        spamwriter.writerow(["Valor médio de cada característica: "])
+        spamwriter.writerow(scaler.mean_)
+        spamwriter.writerow([])
+        spamwriter.writerow(["Variância de cada característica: "])
+        spamwriter.writerow(scaler.var_)
+        spamwriter.writerow([])
+        spamwriter.writerow(["Dimensionamento relativo a cada característica: "])
+        spamwriter.writerow(scaler.scale_)
+        spamwriter.writerow([])
+    
         spamwriter.writerow(["Classificador: ", str(clf)])
         spamwriter.writerow([])
         
@@ -92,7 +103,6 @@ def outResult(scores, clf, X_transformed, X, y, falso_positivo, falso_negativo):
         spamwriter.writerow(["Numero de vetores de suporte para cada classe: "])
         spamwriter.writerow(clf.n_support_)
         spamwriter.writerow([])
-        
         spamwriter.writerow(["Indices dos vetores de suporte: "])
         spamwriter.writerow(clf.support_)
         spamwriter.writerow([])

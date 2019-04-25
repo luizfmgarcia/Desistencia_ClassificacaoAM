@@ -1,4 +1,3 @@
-#from objects import *
 import genData
 import ioData
 import numpy as np
@@ -12,7 +11,7 @@ class main:
 
     QTDE_DESISTE = 3000        
     QTDE_CONTINUA = 3000
-    
+    print("#=================================================")
     print("Podemos prever, baseando em alguns dados de um certo aluno universitario, se ele ira, muito provavelmete, continuar (1) ou desistir (0) do curso em algum momento proximo?")
     escolha = input('Para tal, voce gostaria de ciar uma nova base de dados (s/n)? Se já há uma base, ela será apagada caso sim: ')
     
@@ -35,6 +34,15 @@ class main:
     X_treino_escalar, y_treino_escalar = genData.genData(int(QTDE_DESISTE/4), int(QTDE_CONTINUA/4))
     scaler = StandardScaler()
     scaler.fit(X)
+    print("#=================================================")
+    print("Encontrando a Normalizção dos objetos:")
+    print()
+    print("Valor médio de cada característica: ", scaler.mean_)
+    print()
+    print("Variância de cada característica: ", scaler.var_)
+    print()
+    print("Dimensionamento relativo a cada característica: ", scaler.scale_)
+    
     
     #=================================================
     
@@ -54,6 +62,7 @@ class main:
     #=================================================    
 
     # Apresentando e Salvando o resultado
+    print("#=================================================")
     print()
     print("Base para treinamento possui (objetos) para cada classe: ", QTDE_CONTINUA)    
     print()
@@ -77,21 +86,23 @@ class main:
     print("Numero de Falsos Positivos que a base de treinamento possui: ", falso_positivo)
     print("Numero de Falsos Negativos que a base de treinamento possui: ", falso_negativo)
     print()
-    ioData.outResult(scores, clf, X_transformed, X, y, falso_positivo, falso_negativo)
-    print()
+    ioData.outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_negativo)
     
     #=================================================
     
     # Testando o modelo com novos dados
     teste = 1000
     X_test, y_test = genData.genData(int(teste/2), int(teste/2))
-    X_test_transformed = scaler.transform(X_test_transformed)
+    X_test_transformed = scaler.transform(X_test)
     scores_test = cross_val_score(clf, X_test_transformed, y_test, cv =10)
     zerosX_test, unsX_test = np.split(X_test_transformed, 2)
     result_zeros_test = clf.predict(zerosX_test)
     result_uns_test = clf.predict(unsX_test)
     falso_positivo_test = np.count_nonzero(result_zeros_test)
-    falso_negativo_test = result_uns_new.size-np.count_nonzero(result_uns_test)
+    falso_negativo_test = result_uns_test.size-np.count_nonzero(result_uns_test)
+    
+    print("#=================================================")
+    print()
     print("Nova base para testes possui (objetos) para cada classe: ", int(teste/2))
     print("Score do modelo aplicado à essa base: ", clf.score(X_test_transformed, y_test))
     print("Media e Desvio Padrão (Validação Cruzada): ", scores_test.mean(), scores_test.std())
@@ -101,6 +112,7 @@ class main:
     #=================================================
     
     # Testando o modelo gerado para novas entradas
+    print("#=================================================")
     escolha = input('Voce quer testar um novo aluno?(s/n): ')
     while(escolha=='s'):
         dados = input('Valores (separados por virgulas): ')
@@ -110,6 +122,7 @@ class main:
             novo_X[i] = float(novo_X[i])
         aluno = scaler.transform(novo_X)    
         print("Classificação, Prob. por classe e Valor resultante do modelo: ", clf.predict([aluno]), clf1.predict_proba([aluno]), clf1.decision_function([aluno]))
+        print()
         escolha = input('Voce quer testar um novo aluno?(s/n): ')    
         
 #==============================================================================================================
