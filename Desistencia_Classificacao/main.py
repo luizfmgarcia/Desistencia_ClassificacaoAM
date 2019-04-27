@@ -3,13 +3,17 @@ import ioData
 import numpy as np
 from sklearn import svm
 from sklearn.model_selection import cross_val_score
-from sklearn.preprocessing import StandardScaler 
+from sklearn.preprocessing import StandardScaler
+
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.svm import LinearSVC
+import matplotlib.pyplot as plt 
 
 #==============================================================================================================            
 
 class main:
 
-    QTDE_DESISTE = QTDE_CONTINUA = 500
+    QTDE_DESISTE = QTDE_CONTINUA = 6000
     
     print("#=================================================")
     print("Podemos prever, baseando em alguns dados de um certo aluno universitario, se ele ira, muito provavelmete, continuar (1) ou desistir (0) do curso em algum momento proximo?")
@@ -102,6 +106,30 @@ class main:
     
     #=================================================
     
+    # Grafico 1
+    top_features = 11
+    feature_names = ['CursoHumana', 'CursoExata', 'CursoBiologica', 'CursoEngenharia', 'CursoLicenciatura', 'TurnoAulasMatutino', 'TurnoAulasVespertino', 'TurnoAulasNoturno', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'PerConvivencia', 'PerStress', 'SexoFeminino', 'SexoMasculino', 'Idade', 'PossuiFilhos', 'RendaFamiliar', 'Trabalha', 'Bolsista', 'DistTrabalho', 'DistCasa']
+    coef = clf.coef_.ravel()
+    top_positive_coefficients = np.argsort(coef)[-top_features:]
+    top_negative_coefficients = np.argsort(coef)[:top_features]
+    top_coefficients = np.hstack([top_negative_coefficients, top_positive_coefficients])
+    # create plot
+    plt.figure(figsize=(15, 5))
+    colors = ['red' if c < 0 else 'blue' for c in coef[top_coefficients]]
+    plt.bar(np.arange(2*top_features), coef[top_coefficients], color=colors)
+    feature_names = np.array(feature_names)
+    plt.xticks(np.arange(0, 2*top_features), feature_names[top_coefficients], rotation=60, ha='right')
+    
+    plt.title("Features Weight on SVM Model")
+    plt.grid(True)
+    plt.xlabel("Features")
+    plt.ylabel("Weight")
+    plt.show()
+
+
+    
+    #=================================================
+    
     # Testando o modelo com novos dados
     teste = QTDE_CONTINUA+QTDE_DESISTE
     X_test, y_test = genData.genData(int(teste/2), int(teste/2))
@@ -136,6 +164,6 @@ class main:
         print("Classificacao, Prob. por classe e Valor resultante do modelo: ", clf.predict(aluno), clf.predict_proba(aluno), clf.decision_function(aluno))
         print()
         escolha = input('Voce quer testar um novo aluno?(s/n): ')    
-        
+    
 #==============================================================================================================
         
