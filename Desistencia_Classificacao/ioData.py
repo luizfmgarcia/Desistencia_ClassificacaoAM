@@ -6,6 +6,7 @@ import os
 import sys
 import shutil
 import numpy as np
+import matplotlib.pyplot as plt
    
 #==============================================================================================================            
     
@@ -143,3 +144,113 @@ def outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_ne
     print ("Result Saved!")
 
 #=============================================================================================================
+
+def graphic1(clf):
+    
+    top_features = 11
+    feature_names = ['CursoHumana', 'CursoExata', 'CursoBiologica', 'CursoEngenharia', 'CursoLicenciatura', 'TurnoAulasMatutino', 'TurnoAulasVespertino', 'TurnoAulasNoturno', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'PerConvivencia', 'PerStress', 'SexoFeminino', 'SexoMasculino', 'Idade', 'PossuiFilhos', 'RendaFamiliar', 'Trabalha', 'Bolsista', 'DistTrabalho', 'DistCasa']
+    coef = clf.coef_.ravel()
+    top_positive_coefficients = np.argsort(coef)[-top_features:]
+    top_negative_coefficients = np.argsort(coef)[:top_features]
+    top_coefficients = np.hstack([top_negative_coefficients, top_positive_coefficients])
+    # create plot
+    plt.figure(figsize=(15, 5))
+    colors = ['red' if c < 0 else 'blue' for c in coef[top_coefficients]]
+    plt.bar(np.arange(2*top_features), coef[top_coefficients], color=colors)
+    feature_names = np.array(feature_names)
+    plt.xticks(np.arange(0, 2*top_features), feature_names[top_coefficients], rotation=60, ha='right')
+    
+    plt.title("Features Weights on learned SVM Model")
+    plt.grid(True)
+    plt.xlabel("Features")
+    plt.ylabel("Weight")
+    plt.show()
+
+#=============================================================================================================
+    
+def make_meshgrid(x, y, h=.02):
+    x_min, x_max = x.min() - 1, x.max() + 1
+    y_min, y_max = y.min() - 1, y.max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+    return xx, yy
+
+def plot_contours(ax, clf, xx, yy, **params):
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    out = ax.contourf(xx, yy, Z, **params)
+    return out
+
+def graphic2(X, y, clf):
+    
+    fig, ax = plt.subplots()
+    # title for the plots
+    title = ('Decision surface of linear SVC ')
+    # Set-up grid for plotting.
+    X0, X1 = X[:, 0], X[:, 1]
+    xx, yy = make_meshgrid(X0, X1)
+    
+    plot_contours(ax, clf, xx, yy, cmap=plt.cm.coolwarm, alpha=0.8)
+    ax.scatter(X0, X1, c=y, cmap=plt.cm.coolwarm, s=20, edgecolors='k')
+    ax.set_ylabel('PC2')
+    ax.set_xlabel('PC1')
+    ax.set_xticks(())
+    ax.set_yticks(())
+    ax.set_title('Decison surface using the PCA transformed/projected features')
+    ax.legend()
+    plt.show()
+
+#=============================================================================================================
+
+def graphic3(X, y, clf):
+
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=30, cmap=plt.cm.Paired)
+
+    # plot the decision function
+    ax = plt.gca()
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+    
+    # create grid to evaluate model
+    xx = np.linspace(xlim[0], xlim[1], 30)
+    yy = np.linspace(ylim[0], ylim[1], 30)
+    YY, XX = np.meshgrid(yy, xx)
+    xy = np.vstack([XX.ravel(), YY.ravel()]).T
+    Z = clf.decision_function(xy).reshape(XX.shape)
+    
+    # plot decision boundary and margins
+    ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--', '-', '--'])
+    # plot support vectors
+    ax.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=100, linewidth=1, facecolors='none', edgecolors='k')
+    ax.set_title('Maximum margin separating hyperplane')
+    plt.show()
+
+#=============================================================================================================
+
+def graphic4(X, y, svm):
+    
+    # we create an instance of SVM and fit out data. We do not scale our
+    # data since we want to plot the support vectors
+    C = 1.0  # SVM regularization parameter
+    models = (svm.SVC(kernel='linear', C=C), svm.LinearSVC(C=C), svm.SVC(kernel='rbf', gamma=0.7, C=C), svm.SVC(kernel='poly', degree=3, C=C))
+    models = (clf.fit(X, y) for clf in models)
+    
+    # title for the plots
+    titles = ('SVC with linear kernel','LinearSVC (linear kernel)', 'SVC with RBF kernel', 'SVC with polynomial (degree 3) kernel')
+    
+    # Set-up 2x2 grid for plotting.
+    fig, sub = plt.subplots(2, 2)
+    plt.subplots_adjust(wspace=0.4, hspace=0.4)
+    
+    X0, X1 = X[:, 0], X[:, 1]
+    xx, yy = make_meshgrid(X0, X1)
+    
+    for clf, title, ax in zip(models, titles, sub.flatten()):
+        plot_contours(ax, clf, xx, yy, cmap=plt.cm.coolwarm, alpha=0.8)
+        ax.scatter(X0, X1, c=y, cmap=plt.cm.coolwarm, s=20, edgecolors='k')
+        ax.set_xlim(xx.min(), xx.max())
+        ax.set_ylim(yy.min(), yy.max())
+        ax.set_xticks(())
+        ax.set_yticks(())
+        ax.set_title(title)
+    
+    plt.show()    

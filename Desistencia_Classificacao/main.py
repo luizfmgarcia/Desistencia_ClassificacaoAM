@@ -4,11 +4,8 @@ import numpy as np
 from sklearn import svm
 from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import StandardScaler
-
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.svm import LinearSVC
-import matplotlib.pyplot as plt 
-
+from sklearn.decomposition import PCA 
+    
 #==============================================================================================================            
 
 class main:
@@ -96,7 +93,7 @@ class main:
     print()
     print("Constantes na funcao de decisao: ", clf.intercept_)
     print()
-    #print("Resultados dos objetos de entrada para o modelo aprendido", clf.decision_function(X_transformed))
+    #print("Resultados dos objetos de entrada para o modelo aprendido", clf.x(X_transformed))
     #print()
     print("Numero de Falsos Positivos que a base de treinamento possui: ", falso_positivo)
     print("Numero de Falsos Negativos que a base de treinamento possui: ", falso_negativo)
@@ -104,36 +101,16 @@ class main:
     print()
     ioData.outResult(scaler, scores, clf, X_transformed, X, y, falso_positivo, falso_negativo, indices_falsosPN)
     
-    #=================================================
-    
     # Grafico 1
-    top_features = 11
-    feature_names = ['CursoHumana', 'CursoExata', 'CursoBiologica', 'CursoEngenharia', 'CursoLicenciatura', 'TurnoAulasMatutino', 'TurnoAulasVespertino', 'TurnoAulasNoturno', 'CursandoPeriodo', 'PerFaltas', 'NumReprovacoes', 'PerConvivencia', 'PerStress', 'SexoFeminino', 'SexoMasculino', 'Idade', 'PossuiFilhos', 'RendaFamiliar', 'Trabalha', 'Bolsista', 'DistTrabalho', 'DistCasa']
-    coef = clf.coef_.ravel()
-    top_positive_coefficients = np.argsort(coef)[-top_features:]
-    top_negative_coefficients = np.argsort(coef)[:top_features]
-    top_coefficients = np.hstack([top_negative_coefficients, top_positive_coefficients])
-    # create plot
-    plt.figure(figsize=(15, 5))
-    colors = ['red' if c < 0 else 'blue' for c in coef[top_coefficients]]
-    plt.bar(np.arange(2*top_features), coef[top_coefficients], color=colors)
-    feature_names = np.array(feature_names)
-    plt.xticks(np.arange(0, 2*top_features), feature_names[top_coefficients], rotation=60, ha='right')
-    
-    plt.title("Features Weight on SVM Model")
-    plt.grid(True)
-    plt.xlabel("Features")
-    plt.ylabel("Weight")
-    plt.show()
+    ioData.graphic1(clf)
 
-
-    
     #=================================================
     
     # Testando o modelo com novos dados
-    teste = QTDE_CONTINUA+QTDE_DESISTE
+    teste = (QTDE_CONTINUA+QTDE_DESISTE)/60
     X_test, y_test = genData.genData(int(teste/2), int(teste/2))
     X_test_transformed = scaler.transform(X_test)
+    
     scores_test = cross_val_score(clf, X_test_transformed, y_test, cv =10)
     zerosX_test, unsX_test = np.split(X_test_transformed, 2)
     result_zeros_test = clf.predict(zerosX_test)
@@ -143,11 +120,43 @@ class main:
     
     print("#=================================================")
     print()
+    print("A seguir, novos dados gerados (com as mesmas regras da base gerada anteriormente) e classificados com o mesmo modelo aprendido anteriormente.")
     print("Nova base para testes possui (objetos) para cada classe: ", int(teste/2))
     print("Score do modelo aplicado a essa base: ", clf.score(X_test_transformed, y_test))
     print("Media e Desvio Padrao (Validacao Cruzada de 10 pastas): ", scores_test.mean(), scores_test.std())
     print("Numero de Falsos Positivos que a nova base de teste possui: ", falso_positivo_test)
     print("Numero de Falsos Negativos que a nova base de teste possui: ", falso_negativo_test)
+
+    #--------------------------------------------------
+    
+    pca = PCA(n_components=2)
+    X_test_transformed = pca.fit_transform(X_test_transformed)
+    
+    model = svm.SVC(kernel='linear')
+    clf1 = model.fit(X_test_transformed, y_test)
+    
+    scores_test = cross_val_score(clf1, X_test_transformed, y_test, cv =10)
+    zerosX_test, unsX_test = np.split(X_test_transformed, 2)
+    result_zeros_test = clf1.predict(zerosX_test)
+    result_uns_test = clf1.predict(unsX_test)
+    falso_positivo_test = np.count_nonzero(result_zeros_test)
+    falso_negativo_test = result_uns_test.size-np.count_nonzero(result_uns_test)
+    
+    print("#=================================================")
+    print()
+    print("A seguir, novos dados gerados (com as mesmas regras da base gerada anteriormente), porem os dados foram dimensionalmente reduzidos (de 22 para 2) utilizando Análise de Componentes Principais (PCA).")
+    print("Nova base para testes possui (objetos) para cada classe: ", int(teste/2))
+    print("Score do modelo aplicado a essa base: ", clf1.score(X_test_transformed, y_test))
+    print("Media e Desvio Padrao (Validacao Cruzada de 10 pastas): ", scores_test.mean(), scores_test.std())
+    print("Numero de Falsos Positivos que a nova base de teste possui: ", falso_positivo_test)
+    print("Numero de Falsos Negativos que a nova base de teste possui: ", falso_negativo_test)
+    
+    # Grafico 2
+    ioData.graphic2(X_test_transformed, y_test, clf1)    
+    # Grafico 3
+    ioData.graphic3(X_test_transformed, y_test, clf1)
+    # Grafico 4
+    ioData.graphic4(X_test_transformed, y_test, svm)
     
     #=================================================
     
