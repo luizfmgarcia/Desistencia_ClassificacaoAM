@@ -106,7 +106,7 @@ class main:
 
     #=================================================
     
-    # Testando o modelo com novos dados
+    # Testando o modelo com novos dados e apresentando-os 
     teste = (QTDE_CONTINUA+QTDE_DESISTE)/60
     X_test, y_test = genData.genData(int(teste/2), int(teste/2))
     X_test_transformed = scaler.transform(X_test)
@@ -132,7 +132,7 @@ class main:
     pca = PCA(n_components=2)
     X_test_transformed = pca.fit_transform(X_test_transformed)
     
-    model = svm.SVC(kernel='linear')
+    model = svm.SVC(kernel='linear', C=1.0, probability=True)
     clf1 = model.fit(X_test_transformed, y_test)
     
     scores_test = cross_val_score(clf1, X_test_transformed, y_test, cv =10)
@@ -147,6 +147,8 @@ class main:
     print("A seguir, novos dados gerados (com as mesmas regras da base gerada anteriormente), porem os dados foram dimensionalmente reduzidos (de 22 para 2) utilizando Análise de Componentes Principais (PCA).")
     print("Nova base para testes possui (objetos) para cada classe: ", int(teste/2))
     print("Score do modelo aplicado a essa base: ", clf1.score(X_test_transformed, y_test))
+    print("Pesos atribuidos as caracteristicas (coeficientes no problema primal): ", clf1.coef_)
+    print("Constantes na funcao de decisao: ", clf1.intercept_)
     print("Media e Desvio Padrao (Validacao Cruzada de 10 pastas): ", scores_test.mean(), scores_test.std())
     print("Numero de Falsos Positivos que a nova base de teste possui: ", falso_positivo_test)
     print("Numero de Falsos Negativos que a nova base de teste possui: ", falso_negativo_test)
