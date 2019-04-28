@@ -107,7 +107,7 @@ class main:
     #=================================================
     
     # Testando o modelo com novos dados e apresentando-os 
-    teste = (QTDE_CONTINUA+QTDE_DESISTE)/60
+    teste = (QTDE_CONTINUA+QTDE_DESISTE)/20
     X_test, y_test = genData.genData(int(teste/2), int(teste/2))
     X_test_transformed = scaler.transform(X_test)
     

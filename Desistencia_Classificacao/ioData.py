@@ -7,6 +7,7 @@ import sys
 import shutil
 import numpy as np
 import matplotlib.pyplot as plt
+plt.rcParams['figure.figsize'] = (9.0, 6.0)
    
 #==============================================================================================================            
     
@@ -203,7 +204,7 @@ def graphic2(X, y, clf):
 
 def graphic3(X, y, clf):
 
-    plt.scatter(X[:, 0], X[:, 1], c=y, s=30, cmap=plt.cm.Paired)
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=20, cmap=plt.cm.Paired)
 
     # plot the decision function
     ax = plt.gca()
@@ -211,8 +212,8 @@ def graphic3(X, y, clf):
     ylim = ax.get_ylim()
     
     # create grid to evaluate model
-    xx = np.linspace(xlim[0], xlim[1], 30)
-    yy = np.linspace(ylim[0], ylim[1], 30)
+    xx = np.linspace(xlim[0], xlim[1], 20)
+    yy = np.linspace(ylim[0], ylim[1], 20)
     YY, XX = np.meshgrid(yy, xx)
     xy = np.vstack([XX.ravel(), YY.ravel()]).T
     Z = clf.decision_function(xy).reshape(XX.shape)
@@ -220,17 +221,17 @@ def graphic3(X, y, clf):
     # plot decision boundary and margins
     ax.contour(XX, YY, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--', '-', '--'])
     # plot support vectors
-    ax.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=100, linewidth=1, facecolors='none', edgecolors='k')
+    ax.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=200, linewidth=1, facecolors='none', edgecolors='k')
     ax.set_title('Maximum margin separating hyperplane')
     plt.show()
 
 #=============================================================================================================
 
 def graphic4(X, y, svm):
-    
+    plt.rcParams['figure.figsize'] = (36.0, 24.0)
     # we create an instance of SVM and fit out data. We do not scale our
     # data since we want to plot the support vectors
-    C = 1.0  # SVM regularization parameter
+    C = 100.0  # SVM regularization parameter
     models = (svm.SVC(kernel='linear', C=C), svm.LinearSVC(C=C), svm.SVC(kernel='rbf', gamma=0.7, C=C), svm.SVC(kernel='poly', degree=3, C=C))
     models = (clf.fit(X, y) for clf in models)
     
@@ -238,13 +239,15 @@ def graphic4(X, y, svm):
     titles = ('SVC with linear kernel','LinearSVC (linear kernel)', 'SVC with RBF kernel', 'SVC with polynomial (degree 3) kernel')
     
     # Set-up 2x2 grid for plotting.
-    fig, sub = plt.subplots(2, 2)
-    plt.subplots_adjust(wspace=0.4, hspace=0.4)
-    
+    #fig, sub = plt.subplots(2, 2)
+    #plt.subplots_adjust(wspace=0.4, hspace=0.4)
+    plt.rcParams['figure.figsize'] = (9.0, 6.0)
     X0, X1 = X[:, 0], X[:, 1]
     xx, yy = make_meshgrid(X0, X1)
     
-    for clf, title, ax in zip(models, titles, sub.flatten()):
+    for clf, title in zip(models, titles):
+    #for clf, title, ax in zip(models, titles, sub.flatten()):
+        ax = plt.gca()
         plot_contours(ax, clf, xx, yy, cmap=plt.cm.coolwarm, alpha=0.8)
         ax.scatter(X0, X1, c=y, cmap=plt.cm.coolwarm, s=20, edgecolors='k')
         ax.set_xlim(xx.min(), xx.max())
@@ -252,5 +255,4 @@ def graphic4(X, y, svm):
         ax.set_xticks(())
         ax.set_yticks(())
         ax.set_title(title)
-    
-    plt.show()    
+        plt.show()    

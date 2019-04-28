@@ -1,0 +1,117 @@
+Podemos prever, baseando em alguns dados de um certo aluno universitario, se ele ira, muito provavelmete, continuar (1) ou desistir (0) do curso em algum momento proximo?
+
+Para tal, voce gostaria de ciar uma nova base de dados (s/n)? Se já há uma base, ela será apagada caso sim: n
+Data Obtained!
+#=================================================
+Encontrando a Normalizacao dos objetos:
+
+Valor medio encontrado para cada caracteristica na base de treinamento do Scaler:  [ 0.17491667  0.24025     0.17533333  0.2295      0.18        0.32525
+  0.31725     0.3575     18.65091667 20.1026775   5.73708333 50.22714333
+ 50.0214425   0.49891667  0.50108333 28.42975     0.09616667  5.289
+  0.17766667  0.35841667  2.15206167 17.5508575 ]
+
+Variancia de cada caracteristica:  [1.44320826e-01 1.82529938e-01 1.44591556e-01 1.76829750e-01
+ 1.47600000e-01 2.19462437e-01 2.16602437e-01 2.29693750e-01
+ 2.44555724e+02 2.18819614e+02 1.27012915e+01 6.06991453e+02
+ 6.07640924e+02 2.49998826e-01 2.49998826e-01 1.26442898e+02
+ 8.69186389e-02 9.71247900e+00 1.46101222e-01 2.29954160e-01
+ 3.13304821e+01 8.54753500e+01]
+
+Dimensionamento relativo a cada caracteristica:  [ 0.37989581  0.42723523  0.38025196  0.4205113   0.38418745  0.46846818
+  0.46540567  0.47926376 15.63827753 14.79255264  3.56388713 24.63719654
+ 24.6503737   0.49999883  0.49999883 11.24468311  0.29481967  3.11648504
+  0.3822319   0.47953536  5.59736385  9.24528799]
+#=================================================
+
+Base para treinamento possui (objetos) para cada classe:  6000
+
+Classificador:  SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=3, gamma='auto_deprecated',
+  kernel='linear', max_iter=-1, probability=True, random_state=None,
+  shrinking=True, tol=0.001, verbose=False)
+
+Score do modelo aplicado a essa base:  0.9984166666666666
+Media e Desvio Padrao (Validacao Cruzada de 10 pastas):  0.9970833333333333 0.002588704094501514
+
+Numero de vetores de suporte para cada classe:  [38 37]
+
+Indices dos vetores de suporte:  [   44   746  1514  1912  1960  2041  2070  2100  2219  2244  2494  2597
+  2625  2626  2654  3411  3450  3788  4119  4205  4331  4340  4513  4588
+  4675  4754  4803  5112  5128  5201  5290  5461  5484  5492  5546  5662
+  5757  5940  6126  6258  6282  6787  6886  6902  6982  6984  7081  7098
+  7099  7218  7464  8430  8465  8710  8950  9018  9032  9110  9161  9249
+  9449  9663  9695  9741  9890  9924  9964  9983  9992 10014 10626 10640
+ 10789 10890 11209]
+Um objeto que e vetor suporte:  [ 1.    0.    0.    0.    0.    0.    1.    0.   40.    8.48  0.   28.11
+ 59.7   0.    1.   20.    0.    1.    0.    1.    0.   23.8 ]
+
+Coeficientes na funcao de decisao dual:  [[-0.96562525 -1.         -1.         -1.         -1.         -0.98857893
+  -1.         -1.         -1.         -0.3938081  -1.         -1.
+  -1.         -0.57558179 -1.         -1.         -0.31913493 -1.
+  -0.27121507 -1.         -1.         -0.22523548 -0.9036978  -1.
+  -1.         -1.         -0.46370181 -1.         -1.         -1.
+  -1.         -1.         -0.34430515 -0.38200198 -1.         -1.
+  -1.         -1.          1.          0.47946428  0.84154407  0.70104602
+   1.          1.          1.          1.          1.          1.
+   1.          1.          0.292139    1.          1.          1.
+   1.          1.          0.58398356  1.          1.          1.
+   1.          1.          1.          0.74037177  1.          1.
+   0.68644807  0.5034549   1.          1.          1.          0.0044346
+   1.          1.          1.        ]]
+
+Pesos atribuidos as caracteristicas (coeficientes no problema primal):  [[ 0.09048468 -0.0132474   0.03798254 -0.2072658   0.11452659  0.03343949
+   0.1598842  -0.18794735  0.67999557 -1.14112321 -0.27842086  2.01863997
+  -1.8070454   0.04796207 -0.04796207  0.31379304  0.05378092  0.03240805
+   1.7154373   0.89531497 -0.77853782 -2.32679793]]
+
+Constantes na funcao de decisao:  [-0.08269344]
+
+Numero de Falsos Positivos que a base de treinamento possui:  11
+Numero de Falsos Negativos que a base de treinamento possui:  8
+Indices destes objetos 'erroneamente' classificados pelo modelo aprendido:  [746, 1912, 1960, 2100, 2494, 3411, 4205, 5128, 5290, 5757, 5940, 6126, 6886, 6982, 8465, 9449, 9695, 9924, 10789]
+
+Exporting result....
+Result Saved!
+
+? FeaturesWeights_LearnedSVMModel.png
+
+C:\Users\luizf\WPy64-3720\python-3.7.2.amd64\lib\site-packages\sklearn\utils\validation.py:595: DataConversionWarning: Data with input dtype object was converted to float64 by StandardScaler.
+  warnings.warn(msg, DataConversionWarning)
+#=================================================
+
+A seguir, novos dados gerados (com as mesmas regras da base gerada anteriormente) e classificados com o mesmo modelo aprendido anteriormente.
+Nova base para testes possui (objetos) para cada classe:  300
+Score do modelo aplicado a essa base:  1.0
+Media e Desvio Padrao (Validacao Cruzada de 10 pastas):  0.9966666666666667 0.006666666666666687
+Numero de Falsos Positivos que a nova base de teste possui:  0
+Numero de Falsos Negativos que a nova base de teste possui:  0
+#=================================================
+
+A seguir, novos dados gerados (com as mesmas regras da base gerada anteriormente), porem os dados foram dimensionalmente reduzidos (de 22 para 2) utilizando Análise de Componentes Principais (PCA).
+Nova base para testes possui (objetos) para cada classe:  300
+Score do modelo aplicado a essa base:  0.9933333333333333
+Pesos atribuidos as caracteristicas (coeficientes no problema primal):  [[ 2.21226125 -0.66283135]]
+Constantes na funcao de decisao:  [-0.23082187]
+Media e Desvio Padrao (Validacao Cruzada de 10 pastas):  0.99 0.011055415967851345
+Numero de Falsos Positivos que a nova base de teste possui:  1
+Numero de Falsos Negativos que a nova base de teste possui:  3
+
+
+? "Decison surface using the PCA transformed-projected features.png"
+
+? "Maximum margin separating hyperplane.png"
+
+? "SVC with linear kernel.png"
+C:\Users\luizf\WPy64-3720\python-3.7.2.amd64\lib\site-packages\sklearn\svm\base.py:931: ConvergenceWarning: Liblinear failed to converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)
+
+? "LinearSVC (linear kernel).png"
+
+? "SVC with RBF kernel.png"
+C:\Users\luizf\WPy64-3720\python-3.7.2.amd64\lib\site-packages\sklearn\svm\base.py:196: FutureWarning: The default value of gamma will change from 'auto' to 'scale' in version 0.22 to account better for unscaled features. Set gamma explicitly to 'auto' or 'scale' to avoid this warning.
+  "avoid this warning.", FutureWarning)
+
+? "SVC with polynomial (degree 3) kernel.png"
+#=================================================
+
+Voce quer testar um novo aluno?(s/n): n
